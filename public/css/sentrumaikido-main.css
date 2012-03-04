@@ -1,0 +1,286 @@
+
+/* 
+   Based on 456 Berea Street example
+     http://www.456bereastreet.com/lab/developing_with_web_standards/csslayout/2-col/
+*/
+
+
+
+body,
+html {
+    	margin: 0;
+    	padding: 0;
+    	background: white;
+    	color: #000;
+    	font-family: arial;
+}
+
+body {
+    	min-width: 700px;
+}
+
+
+#wrap {
+    	background: black;
+    	margin: 0 auto;
+		margin-top: 50px;
+    	width: 930px;
+}
+
+#header {
+    	background: black;
+}
+
+#topspacer {
+    	color: white;
+    	background: #c99;
+    	padding: 5px;
+}
+
+#mainWrapper {
+    background: black;
+    color: black;
+    float: right;
+    width: 730px;
+}
+
+#main {
+   	background: white;
+   	color: black;
+	margin-right: 20px;
+}
+
+#mainContent {
+    background: white;
+    color: black;
+	padding-left: 60px;
+	padding-right: 60px;
+	padding-bottom: 20px;
+
+}
+
+
+#nav {
+	background: black;
+	color: white;
+	float: left;
+    width: 120px;
+    float: left;
+	text-align: right;
+	margin-left: 50px;
+}
+
+#rss_and_english_links {
+	margin-top: 10px;
+}
+
+#footer {
+	padding: 5px;
+	padding-right: 15px;
+	padding-top: 10px;
+    margin: 0;
+    color: gray;
+    background: black;
+    clear: both;
+	text-decoration: none;
+	text-align: right;
+	font-size: 80%;
+}
+
+
+
+
+
+
+
+#nav ul{
+    	margin:0;
+    	padding:0;
+    	list-style:none;
+}
+#nav li{
+    	margin:0;
+    	padding:0;
+}
+
+
+
+
+#main h2, #main h3 {
+    	font-family: times;
+		margin-bottom: 10px;
+		margin-top: 30px;
+}
+
+
+#main ul, #nav ul {
+    	margin-bottom:0;
+    	list-style:none;
+}
+
+#main p {
+	margin-top: 0px;
+	margin-bottom: 15px;
+}
+
+
+a {
+	color: red;
+	font-weight: bold;
+}
+ 
+#nav a:link, #nav a:visited, 
+#footer a:link, #footer a:visited {
+	color: white;
+	text-decoration: none;
+	font-weight: bold;
+}
+ 
+#footer a:link, #footer a:visited {
+	color: gray;
+	text-decoration: none;
+	font-weight: bold;
+	text-align: right;
+}
+
+
+
+.roundcont {
+	width: 250px;
+	background-color: #f90;
+	color: #fff;
+}
+
+.roundcont p {
+	margin: 0 10px;
+}
+
+.roundtop { 
+	background: url(../images/webGrafikk/corners/tr.gif) no-repeat top right; 
+}
+
+.roundbottom {
+	background: url(../images/webGrafikk/corners/br.gif) no-repeat top right; 
+}
+
+.roundtopInverted { 
+	background: url(../images/webGrafikk/cornersInverted/tr.gif) no-repeat top right; 
+}
+
+.roundbottomInverted {
+	background: url(../images/webGrafikk/cornersInverted/br.gif) no-repeat top right; 
+}
+
+
+
+img.corner {
+   width: 15px;
+   height: 15px;
+   border: none;
+   display: block !important;
+}
+
+.hide { display: none; }
+
+.rightAligned { text-align: right; }
+
+.list-line-even {
+  background: #C0C0C0;
+}
+
+.list-line-odd {
+  background: white;
+}
+
+pre {
+  background-color: #eee;
+  padding: 10px;
+  font-size: 11px;
+}
+
+.fieldWithErrors {
+  padding: 2px;
+  background-color: red;
+  display: table;
+}
+
+#errorExplanation {
+  width: 400px;
+  border: 2px solid red;
+  padding: 7px;
+  padding-bottom: 12px;
+  margin-bottom: 20px;
+  background-color: #f0f0f0;
+}
+
+#errorExplanation h2 {
+  text-align: left;
+  font-weight: bold;
+  padding: 5px 5px 5px 15px;
+  font-size: 12px;
+  margin: -7px;
+  background-color: #c00;
+  color: #fff;
+}
+
+#errorExplanation p {
+  color: #333;
+  margin-bottom: 0;
+  padding: 5px;
+}
+
+#errorExplanation ul li {
+  font-size: 12px;
+  list-style: square;
+}
+
+a:hover {
+	text-decoration: none;
+}
+
+#scraped-calendar {
+	font-size: 80%;
+}
+
+.menyheader {
+	margin-bottom: 0px;
+	font-size: 150%;
+	
+}
+
+.menypunkter {
+	font-size: 90%;
+	margin-bottom: 25px;
+}
+
+.button {
+   border-top: 1px solid #f79797;
+   background: #d66565;
+   background: -webkit-gradient(linear, left top, left bottom, from(#9c3e3e), to(#d66565));
+   background: -webkit-linear-gradient(top, #9c3e3e, #d66565);
+   background: -moz-linear-gradient(top, #9c3e3e, #d66565);
+   background: -ms-linear-gradient(top, #9c3e3e, #d66565);
+   background: -o-linear-gradient(top, #9c3e3e, #d66565);
+   padding: 7.5px 15px;
+   -webkit-border-radius: 7px;
+   -moz-border-radius: 7px;
+   border-radius: 7px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: white;
+   font-size: 24px;
+   font-family: Georgia, serif;
+   text-decoration: none;
+   vertical-align: middle;
+   }
+.button:hover {
+   border-top-color: #782828;
+   background: #782828;
+   color: #ccc;
+   }
+.button:active {
+   border-top-color: #5c1b1b;
+   background: #5c1b1b;
+   }
