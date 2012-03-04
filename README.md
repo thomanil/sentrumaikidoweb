@@ -1,5 +1,5 @@
-# Sentrum Aikido Website (temporary)
+# Sentrum Aikido Website
 
-The temporary website of Sentrum Aikido.
+The website of Sentrum Aikido.
 
-All rights reserved Sentrum Aikido.
+(All rights reserved Sentrum Aikido)
