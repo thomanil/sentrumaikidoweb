@@ -14,7 +14,7 @@ get '/calendar' do
   erb :calendar
 end
 
-get '/show_calendar' do
+get '/show_calendar/index' do
   erb :calendar, :layout => false
 end
 
