@@ -14,6 +14,10 @@ get '/calendar' do
   erb :calendar
 end
 
+get '/show_calendar' do
+  erb :calendar, :layout => false
+end
+
 get '/startsider/provetime' do
   erb :provetime
 end
