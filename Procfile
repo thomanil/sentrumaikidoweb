@@ -1,1 +1,1 @@
-web: bundle exec ruby sentrumaikido.rb -p $PORT
+web: bundle exec ruby -Ilib sentrumaikido.rb -p $PORT

@@ -4,6 +4,11 @@ module SentrumAikido
     
     CALENDAR_URL = "http://www.aikido.no/index.php?option=com_oskalendar&Itemid=54"
 
+
+    def dummy
+      "yey"
+    end
+    
     # Retrieves and returns the source of the NAF calendar page using http get
     def get_calendar_src
       require 'open-uri' 
