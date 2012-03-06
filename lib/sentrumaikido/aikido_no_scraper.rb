@@ -4,11 +4,6 @@ module SentrumAikido
     
     CALENDAR_URL = "http://www.aikido.no/index.php?option=com_oskalendar&Itemid=54"
 
-
-    def dummy
-      "yey"
-    end
-    
     # Retrieves and returns the source of the NAF calendar page using http get
     def get_calendar_src
       require 'open-uri' 
@@ -43,8 +38,6 @@ module SentrumAikido
 PAGESRC
     end
 
-
-
     # Takes full html src of the calendar.
     # Extract each month from calendar src, returns array of strings each of which is a month "chunk" of markup
     def get_month_chunks(calendar_src)
@@ -61,8 +54,6 @@ PAGESRC
       
       return months
     end
-
-
 
     # Takes array of activity hashmaps
     # Returns one html table row per activity, one column per key-value pair of activity (when, where, etc) 
@@ -95,9 +86,6 @@ PAGESRC
       end
     end
 
-
-
-
     # For any <a href= tag in given url text, substitute link visible text with "Mer info"
     def shorten_url(url)
       pattern = /<a.*>(\S*)<\/a>/um
@@ -113,18 +101,13 @@ PAGESRC
       end
     end
 
-
-
-    # Subsitute mail adress(es) in given string with corresponding clickable a href mailto: link
+    # Substitute mail adress(es) in given string with corresponding clickable a href mailto: link
     def shorten_mail_adr(adr)
       pattern = /\S*(@|\sved\s)\S*/
       adr =~ pattern
       (adr = adr.sub(/#{$&}/, "<a href=\"mailto:#{$&}\">email</a>")) unless $& == nil
       return adr
     end
-
-
-
 
     # Takes month string description and an activity chunk of markup,
     # Each activity element (when, where, who etc) is a table row in this format: 
@@ -149,11 +132,6 @@ PAGESRC
       
       return activity            
     end
-
-
-
-
-
 
     # Takes a chunk of markup starting with <td class="month"> element, extracts month name and cuts it up into activity chunks.
     # Each activity "chunk"  starts and ends with markup: "<tr><td class="activity">"
@@ -182,7 +160,6 @@ PAGESRC
       return collected
     end
 
-
     ERRORPREFIX = "<em>Det oppstod en uventet feil under uttrekk av NAF-kalender. Si gjerne ifra til Thomas! :)!</em>"
 
     # Returns human readable error message
@@ -193,9 +170,6 @@ PAGESRC
 END_OF_MESSAGE
     end
 
-
-
-
     # Returns scraped NAF calendar page as html table
     # If any exceptions are raised during execution a human readable error message is returned instead.
     def scrape_calendar
@@ -205,7 +179,6 @@ END_OF_MESSAGE
         return format_error(e)
       end
     end
-
 
   end
 end
