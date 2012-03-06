@@ -3,10 +3,9 @@ require 'rake/testtask'
 
 task :default => [:test]
 
-
-desc "Run unit tests."
-task :test do
-  puts %x{ ruby -rubygems test/tests.rb}
+Rake::TestTask.new do |i|
+  i.test_files = FileList['test/test_*.rb']
+  #i.verbose = true
 end
 
 desc "Deploy app to Heroku"
