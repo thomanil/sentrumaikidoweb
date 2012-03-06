@@ -5,8 +5,9 @@ task :default => [:help]
 
 desc "Show available tasks"
 task :help do
-  puts "Available rake tasks:"
+  puts "\nAvailable rake tasks:"
   puts %x{ rake -T}
+  puts "\nNote: To start up a local development server, run 'scripts/server' from this dir.\n\n"
 end
 
 
