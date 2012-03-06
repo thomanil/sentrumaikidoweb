@@ -22,5 +22,4 @@ task :pull do
   puts %x{ git pull origin master }
 end
 
-
 # Run 'rake -T' to see all available tasks
