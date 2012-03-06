@@ -10,12 +10,11 @@ class TestCalScraper < Test::Unit::TestCase
   
   def test_get_calendar_src
     testcal = @scraper.get_calendar_src
-    
-    assert(testcal =~ /table/, "Expected naf cal page to include table tag")
-    assert(testcal =~ /body/, "Expected naf cal page to include body tag")
-    assert(testcal =~ /html/, "Expected naf cal page to include html tag")
-    assert(testcal =~ /month/, "Expected naf cal page to include at least one tag with 'month' class")
-    assert(testcal =~ /activity/, "Expected naf cal page to include at least one tag with 'activity' class")
+    assert testcal =~ /table/, "Expected naf cal page to include table tag"
+    assert testcal =~ /body/, "Expected naf cal page to include body tag"
+    assert testcal =~ /html/, "Expected naf cal page to include html tag"
+    assert testcal =~ /month/, "Expected naf cal page to include at least one tag with 'month' class"
+    assert testcal =~ /activity/, "Expected naf cal page to include at least one tag with 'activity' class"
   end
   
   def test_create_table_row
@@ -23,30 +22,27 @@ class TestCalScraper < Test::Unit::TestCase
       :arranger => "Testarrangoer", :contact => "Testkontakt", :moreinfo => "Testinfo"}
     activities = [activity]
     row = @scraper.create_table_rows(activities)
-    assert(row =~ /Teststed|Testaktivitet|Testkontakt/)
-    assert(row == "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet</td><td>Testkontakt</td><td></td></tr>\n")
+    assert row =~ /Teststed|Testaktivitet|Testkontakt/
+    assert_equal "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet</td><td>Testkontakt</td><td></td></tr>\n", row
   end
   
   def test_get_month_chunks
     months = @scraper.get_month_chunks(test_calendar_src)
-    
-    assert(months.length == 11, "Expected 11 month chunks, march-january")
+    assert_equal 11, months.length, "Expected 11 month chunks, march-january"
   end
   
   def test_process_activity
     a =  @scraper.process_activity(test_activity_chunk, "april")
-
-    assert(a[:time] =~ /11-12. april/, "time value wrong")
-    assert(a[:place] =~/Aikidojo, Hoffsveien 9/, "place value wrong")
-    assert(a[:activity] =~ /Seminar med Birger/, "activity value wrong")
-    assert(a[:contact] =~ /info@aikidojo.no/, "contact value wrong")
-    assert(a[:moreinfo] =~ /www.aikidojo.no/, "info value wrong")
+    assert a[:time] =~ /11-12. april/, "time value wrong"
+    assert a[:place] =~/Aikidojo, Hoffsveien 9/, "place value wrong"
+    assert a[:activity] =~ /Seminar med Birger/, "activity value wrong"
+    assert a[:contact] =~ /info@aikidojo.no/, "contact value wrong"
+    assert a[:moreinfo] =~ /www.aikidojo.no/, "info value wrong"
   end
   
   def test_process_month
     m = @scraper.process_month(test_month_chunk)
-    
-    assert(m.length == 4, "Expected result of month chunk processing to be 4 activity hashmaps")
+    assert_equal 4, m.length, "Expected result of month chunk processing to be 4 activity hashmaps"
     m.each { |a| assert(a[:time] =~ /april/, "Expected all activites to have april suffix in time field")  }
   end
   
@@ -57,35 +53,36 @@ class TestCalScraper < Test::Unit::TestCase
   def test_format_error
     error = "test error msg"
     returned = @scraper.format_error(error)
-    assert(returned =~ /#{error}/, "Expected error message")
+    assert returned =~ /#{error}/, "Expected error message"
   end
-  
 
   def test_scrape_calendar
     scraped = @scraper.scrape_calendar()
     
-    assert(scraped =~ /table/, "Expected table in scraped calendar")
-    assert(scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar")
-    assert(scraped =~ /uttrekk/, "Expected 'uttrekk' string in scraped calendar")
+    assert scraped =~ /table/, "Expected table in scraped calendar"
+    assert scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar"
+    assert scraped =~ /uttrekk/, "Expected 'uttrekk' string in scraped calendar"
   end
-  
-
 
   def test_shorten_url
-    result = @scraper.shorten_url("xyz <a class=\"info\" href=\"http://www.kashima.no\">http://www.kashima.no</a>")
-    assert(result == "xyz <a class=\"info\" href=\"http://www.kashima.no\">link</a>", "Expected result to contain shortened url")
-    
-    result = @scraper.shorten_url("<a class=\"info\" href=\"http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86\">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a>")
-    assert(result == "", "Expected result to contain empty string")
+    expected = "xyz <a class=\"info\" href=\"http://www.kashima.no\">les mer</a>"
+    actual = @scraper.shorten_url("xyz <a class=\"info\" href=\"http://www.kashima.no\">http://www.kashima.no</a>")
+    assert_equal expected, actual, "Expected result to contain shortened url"
+
+    expected = ""
+    actual = @scraper.shorten_url("<a class=\"info\" href=\"http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86\">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a>")
+    assert_equal expected, actual
   end
   
 
   def test_shorten_mail_adr
-    result = @scraper.shorten_mail_adr("xyz thomas@ninjastic.net")
-    assert(result == "xyz <a href=\"mailto:thomas@ninjastic.net\">email</a>", "Expected result to contain mailto element")
-    
-    result = @scraper.shorten_mail_adr("xyz thomas ved ninjastic.net")
-    assert(result == "xyz <a href=\"mailto:thomas ved ninjastic.net\">email</a>", "Expected result to contain mailto element")
+    expected = "xyz <a href=\"mailto:thomas@ninjastic.net\">email</a>"
+    actual = @scraper.shorten_mail_adr("xyz thomas@ninjastic.net")
+    assert_equal expected, actual, "Expected result to contain mailto element"
+
+    expected =  "xyz <a href=\"mailto:thomas ved ninjastic.net\">email</a>"
+    actual = @scraper.shorten_mail_adr("xyz thomas ved ninjastic.net")
+    assert_equal expected, actual, "Expected result to contain mailto element"
   end
 
 
