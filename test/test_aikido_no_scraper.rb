@@ -3,11 +3,14 @@
 require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestCalScraper < Test::Unit::TestCase
- 
- 
-  def test_get_calendar_src
-    testcal = ShowCalendarHelper.get_calendar_src
+
+  def setup
+    @scraper = SentrumAikido::AikidoNoScraper.new
+  end
   
+  def test_get_calendar_src
+    testcal = @scraper.get_calendar_src
+    
     assert(testcal =~ /table/, "Expected naf cal page to include table tag")
     assert(testcal =~ /body/, "Expected naf cal page to include body tag")
     assert(testcal =~ /html/, "Expected naf cal page to include html tag")
@@ -17,24 +20,21 @@ class TestCalScraper < Test::Unit::TestCase
   
   def test_create_table_row
     activity = {:time => "12:00", :place => "Teststed", :activity => "Testaktivitet", 
-                :arranger => "Testarrangoer", :contact => "Testkontakt", :moreinfo => "Testinfo"}
+      :arranger => "Testarrangoer", :contact => "Testkontakt", :moreinfo => "Testinfo"}
     activities = [activity]
-    row = ShowCalendarHelper.create_table_rows(activities)
+    row = @scraper.create_table_rows(activities)
     assert(row =~ /Teststed|Testaktivitet|Testkontakt/)
     assert(row == "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet</td><td>Testkontakt</td><td></td></tr>\n")
   end
-
-  
   
   def test_get_month_chunks
-    months = ShowCalendarHelper.get_month_chunks(test_calendar_src)
- 
+    months = @scraper.get_month_chunks(test_calendar_src)
+    
     assert(months.length == 11, "Expected 11 month chunks, march-january")
   end
   
-  
   def test_process_activity
-    a =  ShowCalendarHelper.process_activity(test_activity_chunk, "april")
+    a =  @scraper.process_activity(test_activity_chunk, "april")
 
     assert(a[:time] =~ /11-12. april/, "time value wrong")
     assert(a[:place] =~/Aikidojo, Hoffsveien 9/, "place value wrong")
@@ -42,31 +42,27 @@ class TestCalScraper < Test::Unit::TestCase
     assert(a[:contact] =~ /info@aikidojo.no/, "contact value wrong")
     assert(a[:moreinfo] =~ /www.aikidojo.no/, "info value wrong")
   end
-   
-   
-  def test_process_month
-    m = ShowCalendarHelper.process_month(test_month_chunk)
   
+  def test_process_month
+    m = @scraper.process_month(test_month_chunk)
+    
     assert(m.length == 4, "Expected result of month chunk processing to be 4 activity hashmaps")
     m.each { |a| assert(a[:time] =~ /april/, "Expected all activites to have april suffix in time field")  }
   end
   
-  
   def test_process_calendar
-    activites = ShowCalendarHelper.process_calendar(test_calendar_src)
+    activites = @scraper.process_calendar(test_calendar_src)
   end
-
-   
   
   def test_format_error
     error = "test error msg"
-    returned = ShowCalendarHelper.format_error(error)
+    returned = @scraper.format_error(error)
     assert(returned =~ /#{error}/, "Expected error message")
   end
-   
+  
 
   def test_scrape_calendar
-    scraped = ShowCalendarHelper.scrape_calendar()
+    scraped = @scraper.scrape_calendar()
     
     assert(scraped =~ /table/, "Expected table in scraped calendar")
     assert(scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar")
@@ -76,26 +72,26 @@ class TestCalScraper < Test::Unit::TestCase
 
 
   def test_shorten_url
-    result = ShowCalendarHelper.shorten_url("xyz <a class=\"info\" href=\"http://www.kashima.no\">http://www.kashima.no</a>")
+    result = @scraper.shorten_url("xyz <a class=\"info\" href=\"http://www.kashima.no\">http://www.kashima.no</a>")
     assert(result == "xyz <a class=\"info\" href=\"http://www.kashima.no\">link</a>", "Expected result to contain shortened url")
     
-    result = ShowCalendarHelper.shorten_url("<a class=\"info\" href=\"http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86\">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a>")
+    result = @scraper.shorten_url("<a class=\"info\" href=\"http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86\">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a>")
     assert(result == "", "Expected result to contain empty string")
   end
   
 
   def test_shorten_mail_adr
-    result = ShowCalendarHelper.shorten_mail_adr("xyz thomas@ninjastic.net")
+    result = @scraper.shorten_mail_adr("xyz thomas@ninjastic.net")
     assert(result == "xyz <a href=\"mailto:thomas@ninjastic.net\">email</a>", "Expected result to contain mailto element")
     
-    result = ShowCalendarHelper.shorten_mail_adr("xyz thomas ved ninjastic.net")
+    result = @scraper.shorten_mail_adr("xyz thomas ved ninjastic.net")
     assert(result == "xyz <a href=\"mailto:thomas ved ninjastic.net\">email</a>", "Expected result to contain mailto element")
   end
 
 
 
-def test_activity_chunk
-  return <<ACTIVITY
+  def test_activity_chunk
+    return <<ACTIVITY
   <td class="activity">			 
 <table border="0">
 
@@ -111,14 +107,14 @@ def test_activity_chunk
 </td></tr>						
   	  			<tr><td class="activity">
 ACTIVITY
-  
-end
+    
+  end
 
 
 
 
-def test_month_chunk
-  return <<MONTH
+  def test_month_chunk
+    return <<MONTH
   <td class="month"><b>April</b></td></tr>
 
 			<tr><td class="activity">			 
@@ -191,7 +187,7 @@ Teori og praktiske øvelser basert på mangeårig erfaring med \"budo og barn\" 
 	<tr><td class="month">
 MONTH
 
-end
+  end
 
 
 
@@ -202,8 +198,8 @@ end
 
 
 
-def test_calendar_src
-     return <<PAGESRC
+  def test_calendar_src
+    return <<PAGESRC
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -744,11 +740,6 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 <!-- 1204659782 -->
 PAGESRC
 end
-
-
-
-
-  
 
 end
 
