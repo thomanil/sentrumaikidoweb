@@ -1,3 +1,6 @@
 source :rubygems
 gem 'sinatra'
-gem 'mocha'
+
+group :test do
+  gem 'mocha'
+end

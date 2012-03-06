@@ -1,7 +1,14 @@
 require 'rake'
 require 'rake/testtask'
 
-task :default => [:test]
+task :default => [:help]
+
+desc "Show available tasks"
+task :help do
+  puts "Available rake tasks:"
+  puts %x{ rake -T}
+end
+
 
 Rake::TestTask.new do |i|
   i.test_files = FileList['test/test_*.rb']
