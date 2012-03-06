@@ -23,7 +23,8 @@ class TestCalScraper < Test::Unit::TestCase
     activities = [activity]
     row = @scraper.create_table_rows(activities)
     assert row =~ /Teststed|Testaktivitet|Testkontakt/
-    assert_equal "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet</td><td>Testkontakt</td><td></td></tr>\n", row
+    expected_row_content = "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet... </td><td>Testkontakt</td></tr>\n"
+    assert_equal expected_row_content, row
   end
   
   def test_get_month_chunks
@@ -73,7 +74,6 @@ class TestCalScraper < Test::Unit::TestCase
     actual = @scraper.shorten_url("<a class=\"info\" href=\"http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86\">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a>")
     assert_equal expected, actual
   end
-  
 
   def test_shorten_mail_adr
     expected = "xyz <a href=\"mailto:thomas@ninjastic.net\">email</a>"
@@ -86,6 +86,7 @@ class TestCalScraper < Test::Unit::TestCase
   end
 
 
+  ### TESTDATA ####
 
   def test_activity_chunk
     return <<ACTIVITY
