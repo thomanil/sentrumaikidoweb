@@ -22,7 +22,7 @@ module SentrumAikido
     <td>TK leir</td>
     
     <td>
-    http://wiki.rollespill.no/notater/moin.cgi/Aikido/TKLeir?action=print
+    <a href="http://wiki.rollespill.no/notater/moin.cgi/Aikido/TKLeir?action=print">Mer info</a>
     </td>
     
   </tr>
