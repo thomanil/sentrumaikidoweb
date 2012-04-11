@@ -15,49 +15,19 @@ module SentrumAikido
     <th>Mer info</th>
   </tr>
 
-<!--
+
 
   <tr class="list-line-odd">
-    <td>24-26 april</td>
-    <td>Fellestur til leir med Frank Ostoff i Trondheim</td>
+    <td>13-14 april</td>
+    <td>TK leir</td>
     
     <td>
-    
+    http://wiki.rollespill.no/notater/moin.cgi/Aikido/TKLeir?action=print
     </td>
     
   </tr>
 
-  <tr class="list-line-even">
-    <td>2-3 mai</td>
-    <td>Hyttetur</td>
-    
-    <td>
-    
-    </td>
-    
-  </tr>
-
-  <tr class="list-line-odd">
-    <td>13-15 mar</td>
-    <td>TK leir/gradering</td>
-    
-    <td>
-    
-    </td>
-    
-  </tr>
-
-  <tr class="list-line-even">
-    <td>5-7 juni</td>
-    <td>Birgerleir (ikke verifisert)</td>
-    
-    <td>
-    
-    </td>
-    
-  </tr> -->
-
-
+ 
 </table></p>
 HTMLSRC
     end
