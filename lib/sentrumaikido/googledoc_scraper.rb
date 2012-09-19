@@ -18,11 +18,10 @@ module SentrumAikido
 
 
   <tr class="list-line-odd">
-    <td>13-14 april</td>
-    <td>TK leir</td>
-    
+    <td>18-20 januar 2012</td>
+    <td>Leir med Marc Bachraty</td>    
     <td>
-    <a href="http://wiki.rollespill.no/notater/moin.cgi/Aikido/TKLeir?action=print">Mer info</a>
+      Mer info kommer
     </td>
     
   </tr>
