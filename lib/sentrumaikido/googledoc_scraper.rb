@@ -21,7 +21,7 @@ module SentrumAikido
     <td>18-20 januar 2012</td>
     <td>Leir med Marc Bachraty</td>    
     <td>
-      Mer info kommer
+      <a href="/home/marcseminar">Mer info</a>
     </td>
     
   </tr>
