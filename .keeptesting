@@ -1,0 +1,7 @@
+---
+:watched_paths:
+- test
+- lib
+:failure_regex: Error|Failure|rake aborted|syntax error|unhandled exception
+:test_command: rake test
+:cli_mode: false

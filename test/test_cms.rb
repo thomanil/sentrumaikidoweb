@@ -7,6 +7,10 @@ class TestCMS < Test::Unit::TestCase
     @cms = SentrumAikido::CMS.new
   end
 
+  def test_fetch_googledoc_text
+    assert_match(/Klokkeslett/, @cms.get_treningstider())
+  end
+
 
 
 end
