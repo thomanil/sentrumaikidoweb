@@ -1,10 +1,6 @@
 # -*- coding: utf-8 -*-
 module SentrumAikido
-  class GoogledocScraper
-
-    def dummy
-      "dummy"
-    end
+  class CMS
 
     def internal_calendar
       raw_html = <<HTMLSRC
@@ -19,18 +15,20 @@ module SentrumAikido
 
   <tr class="list-line-odd">
     <td>18-20 januar 2012</td>
-    <td>Leir med Marc Bachraty</td>    
+    <td>Leir med Marc Bachraty</td>
     <td>
       <a href="/home/marcseminar">Mer info</a>
     </td>
-    
+
   </tr>
 
- 
+
 </table></p>
 HTMLSRC
     end
 
-    
+
+
+
   end
 end

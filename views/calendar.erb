@@ -3,11 +3,10 @@
 
 <h2>Interne aktiviteter</h2>
 
-<%= SentrumAikido::GoogledocScraper.new.internal_calendar  %>
+<%= SentrumAikido::CMS.new.internal_calendar  %>
 
 
 
 <h2>Eksterne aktiviteter</h2>
- 
-<%= SentrumAikido::AikidoNoScraper.new.scrape_calendar  %>
 
+<%= SentrumAikido::AikidoNoScraper.new.scrape_calendar  %>
