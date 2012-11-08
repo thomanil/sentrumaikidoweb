@@ -13,6 +13,10 @@ get '/show_calendar/index' do
   erb :calendar, :layout => false
 end
 
+get '/julebord' do
+  redirect "https://docs.google.com/spreadsheet/viewform?pli=1&formkey=dEVybDNkZmRyRW00TG05OUJHaVp3RXc6MA"
+end
+
 get '/beginners' do
   erb :beginners
 end
