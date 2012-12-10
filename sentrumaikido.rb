@@ -2,7 +2,7 @@
 require 'rubygems'
 require 'nokogiri'
 require 'sinatra'
-require 'sentrumaikido'
+require './lib/sentrumaikido.rb'
 
 get '/' do
   erb :index

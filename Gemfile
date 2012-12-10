@@ -1,7 +1,5 @@
-source :rubygems
-gem 'sinatra'
-gem 'nokogiri'
+source "http://rubygems.org"
 
-group :test do
-  gem 'mocha'
-end
+gem "sinatra"
+gem "shotgun"
+gem "mocha"

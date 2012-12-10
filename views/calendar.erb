@@ -1,11 +1,15 @@
 <h1>Kalender</h1>
 
+<style>
+td {
+   border: 1px solid;
+   padding: 5px 10px 5px 10px;
+}
+</style>
 
 <h2>Interne aktiviteter</h2>
 
-<%= SentrumAikido::CMS.new.internal_calendar  %>
-
-
+<p><%= SentrumAikido::CMS.new.get_kalender %></p>
 
 <h2>Eksterne aktiviteter</h2>
 
