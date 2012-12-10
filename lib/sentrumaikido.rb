@@ -1,5 +1,5 @@
-require_relative "sentrumaikido/aikido_no_scraper"
-require_relative "sentrumaikido/cms"
+require "sentrumaikido/aikido_no_scraper"
+require "sentrumaikido/cms"
 
 module SentrumAikido
 
