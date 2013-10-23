@@ -16,6 +16,12 @@ module SentrumAikido
       end
     end
 
+
+    def src_to_activities(cal_html_src)
+      return [1,2,3,4,5]
+    end
+
+
     # Transform given raw NAF calendar html source into simplified html table we can embed on our site
     def process_calendar(all_activities)
       result = <<PAGESRC
@@ -86,8 +92,6 @@ PAGESRC
     end
 
 
-
-
     ERRORPREFIX = "<em>Det oppstod en uventet feil under uttrekk av NAF-kalender. Si gjerne ifra til Thomas! :)!</em>"
 
     # Returns human readable error message
@@ -104,6 +108,10 @@ END_OF_MESSAGE
       begin
 
         src = get_calendar_src
+
+        # TODO use unit tested transformation
+
+
         activities = [{:time => "12.januar", :place => "Oslo", :activity => "Leir med Hodor",
         :contact => "Mr T", :moreinfo => "call us"}]
 

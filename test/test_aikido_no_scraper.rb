@@ -15,6 +15,11 @@ class TestCalScraper < Test::Unit::TestCase
     assert testcal =~ /month/, "Expected naf cal page to include at least one tag with 'month' class"
   end
 
+  def test_transform_calendar_src_into_activity_hash
+    activities = @scraper.src_to_activities("")
+    assert_equal 5, activities.count
+  end
+
   def test_create_table_row
     activity = {:time => "12:00", :place => "Teststed", :activity => "Testaktivitet",
       :arranger => "Testarrangoer", :contact => "Testkontakt", :moreinfo => "Testinfo"}
@@ -23,30 +28,6 @@ class TestCalScraper < Test::Unit::TestCase
     assert row =~ /Teststed|Testaktivitet|Testkontakt/
     expected_row_content = "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet... </td><td>Testkontakt</td></tr>\n"
     assert_equal expected_row_content, row
-  end
-
-  def test_get_month_chunks
-    months = @scraper.get_month_chunks(test_calendar_src)
-    assert_equal 11, months.length, "Expected 11 month chunks, march-january"
-  end
-
-  def test_process_activity
-    a =  @scraper.process_activity(test_activity_chunk, "april")
-    assert a[:time] =~ /11-12. april/, "time value wrong"
-    assert a[:place] =~/Aikidojo, Hoffsveien 9/, "place value wrong"
-    assert a[:activity] =~ /Seminar med Birger/, "activity value wrong"
-    assert a[:contact] =~ /info@aikidojo.no/, "contact value wrong"
-    assert a[:moreinfo] =~ /www.aikidojo.no/, "info value wrong"
-  end
-
-  def test_process_month
-    m = @scraper.process_month(test_month_chunk)
-    assert_equal 4, m.length, "Expected result of month chunk processing to be 4 activity hashmaps"
-    m.each { |a| assert(a[:time] =~ /april/, "Expected all activites to have april suffix in time field")  }
-  end
-
-  def test_process_calendar
-    activites = @scraper.process_calendar(test_calendar_src)
   end
 
   def test_format_error
