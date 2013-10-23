@@ -17,9 +17,24 @@ module SentrumAikido
     end
 
 
-    def src_to_activities(cal_html_src)
-      puts cal_html_src
-      return [1,2,3,4,5]
+    def src_to_activities(html_markup)
+      activities = []
+      require 'nokogiri'
+
+
+      doc = Nokogiri::HTML(html_markup)
+      cal_table = doc.css("#calendar")
+      puts cal_table.css("th").count
+
+
+        activities << {
+          :time => "12.januar",
+          :place => "Oslo",
+          :activity => "Leir med Hodor",
+          :contact => "Mr T",
+          :moreinfo => "call us"}
+
+      return activities
     end
 
 
