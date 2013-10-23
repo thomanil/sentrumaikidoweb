@@ -17,14 +17,14 @@ end
 
 desc "Deploy app to Heroku"
 task :deploy do
-  puts %x{ git push heroku master }
+  puts %x{ git push git@heroku.com:sentrumaikido.git master }
 end
 
 desc "Push new code to Github repo"
 task :push do
   puts %x{ git push origin master }
 end
-  
+
 desc "Pull latest code from Github repo"
 task :pull do
   puts %x{ git pull origin master }
