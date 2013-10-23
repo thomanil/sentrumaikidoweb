@@ -3,6 +3,9 @@ require 'rubygems'
 require 'nokogiri'
 require 'sinatra'
 require './sentrumaikido.rb'
+require './lib/aikido_no_scraper.rb'
+require './lib/cms.rb'
+
 
 # If we don't do this OSI Aikido can't embed our pages in iframe
 set :protection, :except => :frame_options
