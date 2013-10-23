@@ -2,7 +2,7 @@
 module SentrumAikido
   class AikidoNoScraper
 
-    CALENDAR_URL = "http://www.aikido.no/index.php?option=com_oskalendar&Itemid=54"
+    CALENDAR_URL = "http://aikido.no/kalender"
 
     # Retrieves and returns the source of the NAF calendar page using http get
     def get_calendar_src

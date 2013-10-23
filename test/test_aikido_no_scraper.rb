@@ -7,18 +7,16 @@ class TestCalScraper < Test::Unit::TestCase
   def setup
     @scraper = SentrumAikido::AikidoNoScraper.new
   end
-  
+
   def test_get_calendar_src
     testcal = @scraper.get_calendar_src
-    assert testcal =~ /table/, "Expected naf cal page to include table tag"
     assert testcal =~ /body/, "Expected naf cal page to include body tag"
     assert testcal =~ /html/, "Expected naf cal page to include html tag"
     assert testcal =~ /month/, "Expected naf cal page to include at least one tag with 'month' class"
-    assert testcal =~ /activity/, "Expected naf cal page to include at least one tag with 'activity' class"
   end
-  
+
   def test_create_table_row
-    activity = {:time => "12:00", :place => "Teststed", :activity => "Testaktivitet", 
+    activity = {:time => "12:00", :place => "Teststed", :activity => "Testaktivitet",
       :arranger => "Testarrangoer", :contact => "Testkontakt", :moreinfo => "Testinfo"}
     activities = [activity]
     row = @scraper.create_table_rows(activities)
@@ -26,12 +24,12 @@ class TestCalScraper < Test::Unit::TestCase
     expected_row_content = "<tr class=\"list-line-odd\"><td>12:00</td><td>Teststed</td><td>Testaktivitet... </td><td>Testkontakt</td></tr>\n"
     assert_equal expected_row_content, row
   end
-  
+
   def test_get_month_chunks
     months = @scraper.get_month_chunks(test_calendar_src)
     assert_equal 11, months.length, "Expected 11 month chunks, march-january"
   end
-  
+
   def test_process_activity
     a =  @scraper.process_activity(test_activity_chunk, "april")
     assert a[:time] =~ /11-12. april/, "time value wrong"
@@ -40,17 +38,17 @@ class TestCalScraper < Test::Unit::TestCase
     assert a[:contact] =~ /info@aikidojo.no/, "contact value wrong"
     assert a[:moreinfo] =~ /www.aikidojo.no/, "info value wrong"
   end
-  
+
   def test_process_month
     m = @scraper.process_month(test_month_chunk)
     assert_equal 4, m.length, "Expected result of month chunk processing to be 4 activity hashmaps"
     m.each { |a| assert(a[:time] =~ /april/, "Expected all activites to have april suffix in time field")  }
   end
-  
+
   def test_process_calendar
     activites = @scraper.process_calendar(test_calendar_src)
   end
-  
+
   def test_format_error
     error = "test error msg"
     returned = @scraper.format_error(error)
@@ -59,7 +57,7 @@ class TestCalScraper < Test::Unit::TestCase
 
   def test_scrape_calendar
     scraped = @scraper.scrape_calendar()
-    
+
     assert scraped =~ /table/, "Expected table in scraped calendar"
     assert scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar"
     assert scraped =~ /uttrekk/, "Expected 'uttrekk' string in scraped calendar"
@@ -90,7 +88,7 @@ class TestCalScraper < Test::Unit::TestCase
 
   def test_activity_chunk
     return <<ACTIVITY
-  <td class="activity">			 
+  <td class="activity">
 <table border="0">
 
 <tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Birger Sørensen 5.dan</b></td></tr>
@@ -102,10 +100,10 @@ class TestCalScraper < Test::Unit::TestCase
 <tr><td class="activitylegend">Kontakt:</td><td class="activity">info@aikidojo.no</td></tr>
 <tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.aikidojo.no/Flyers/birger.pdf">http://www.aikidojo.no/Flyers/birger.pdf</a></td></tr>
 </table>
-</td></tr>						
+</td></tr>
   	  			<tr><td class="activity">
 ACTIVITY
-    
+
   end
 
 
@@ -115,7 +113,7 @@ ACTIVITY
     return <<MONTH
   <td class="month"><b>April</b></td></tr>
 
-			<tr><td class="activity">			 
+			<tr><td class="activity">
 <table border="0">
 <tr><td class="activitylegend">Hva:</td><td class="activity"><b>Aikidoseminar med Erik Vanem.</b></td></tr>
 <tr><td class="activitylegend">Når:</td><td class="activity">
@@ -126,15 +124,15 @@ ACTIVITY
 <tr><td class="activitylegend">Kontakt:</td><td class="activity">sverre.johnsen@trondheimaikido.no</td></tr>
 <tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.trondheimaikido.no/vanem08.pdf">http://www.trondheimaikido.no/vanem08.pdf</a></td></tr>
 </table>
-</td></tr>						
+</td></tr>
   	  			<tr><td class="activity">&nbsp;</td></tr>
 
-			<tr><td class="activity">			 
+			<tr><td class="activity">
 <table border="0">
 
-<tr><td class="activitylegend">Hva:</td><td class="activity"><b>BUDOSEMINAR med Bjørn Eirik Olsen 6.dan.  
-Velkommen til en aikidoleir med fokus på sverd, mental utvikling mykhet og styrking av hara. Ta med bokken.  
-Ingen påmelding nødvendig.   
+<tr><td class="activitylegend">Hva:</td><td class="activity"><b>BUDOSEMINAR med Bjørn Eirik Olsen 6.dan.
+Velkommen til en aikidoleir med fokus på sverd, mental utvikling mykhet og styrking av hara. Ta med bokken.
+Ingen påmelding nødvendig.
 
 </b></td></tr>
 <tr><td class="activitylegend">Når:</td><td class="activity">
@@ -145,10 +143,10 @@ Ingen påmelding nødvendig.
 <tr><td class="activitylegend">Kontakt:</td><td class="activity">post ved tenshinkan.aikido.no</td></tr>
 <tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a></td></tr>
 </table>
-</td></tr>						
+</td></tr>
   	  			<tr><td class="activity">&nbsp;</td></tr>
 
-			<tr><td class="activity">			 
+			<tr><td class="activity">
 <table border="0">
 
 <tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Birger Sørensen 5.dan</b></td></tr>
@@ -160,10 +158,10 @@ Ingen påmelding nødvendig.
 <tr><td class="activitylegend">Kontakt:</td><td class="activity">info@aikidojo.no</td></tr>
 <tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.aikidojo.no/Flyers/birger.pdf">http://www.aikidojo.no/Flyers/birger.pdf</a></td></tr>
 </table>
-</td></tr>						
+</td></tr>
   	  			<tr><td class="activity">&nbsp;</td></tr>
 
-			<tr><td class="activity">			 
+			<tr><td class="activity">
 <table border="0">
 <tr><td class="activitylegend">Hva:</td><td class="activity"><b>BARNEAIKIDO: seminar i hvordan legge tilrette for barnetrening innen aikido.
 
@@ -179,7 +177,7 @@ Teori og praktiske øvelser basert på mangeårig erfaring med \"budo og barn\" 
 
 <tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href=""></a></td></tr>
 </table>
-</td></tr>						
+</td></tr>
   	  			<tr><td class="activity">&nbsp;</td></tr>
 <tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 	<tr><td class="month">
@@ -231,7 +229,7 @@ MONTH
       <tr>
         <td width="21%"><p>&nbsp;</p>
           <p>&nbsp;</p></td>
-		  
+
         <td width="79%"><div align="center"><span class="style1"></span></div></td>
 
       </tr>
@@ -256,7 +254,7 @@ MONTH
 				<tr>
 
 			<td>
-				
+
 <script type="text/javascript" src="modules/mod_lxmenu/functions.js"></script>
 <script type="text/javascript" src="modules/mod_lxmenu/menu.js"></script>
 <script type="text/javascript" src="modules/mod_lxmenu/pos_lxmenu.js"></script>
@@ -342,7 +340,7 @@ new menu (mainmenu_MENU_ITEMS, mainmenu_MENU_POS);
 			<td>
 
 					<form action="http://www.aikido.no/index.php" method="post" name="login" >
-	
+
 	<table width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
 		<td>
@@ -373,7 +371,7 @@ new menu (mainmenu_MENU_ITEMS, mainmenu_MENU_POS);
 		</td>
 	</tr>
 		</table>
-	
+
 	<input type="hidden" name="option" value="login" />
 	<input type="hidden" name="op2" value="login" />
 	<input type="hidden" name="lang" value="norwegian" />
@@ -387,17 +385,17 @@ new menu (mainmenu_MENU_ITEMS, mainmenu_MENU_POS);
 		</tr>
 		</table>
 		         </td>
-        <td width="764" valign="top">	
+        <td width="764" valign="top">
 	<table border="0" width="100%">
 
 	<tr>
 	<td class="title"><b>Aktiviteter de neste 12 måneder</b></td>
 	<td class="activity"><a href="index.php?option=com_oskalendar&new=true">[Meld inn aktivitet]</a></td>
 	</tr>
-	
+
 				<tr><td class="month"><b>Mars</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Jorma Lyly, 5. Dan.</b></td></tr>
 
@@ -409,10 +407,10 @@ new menu (mainmenu_MENU_ITEMS, mainmenu_MENU_POS);
 
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.sunyata-aikido.org/seminars/leir-jorma-mars-2008.html">http://www.sunyata-aikido.org/seminars/leir-jorma-mars-2008.html</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Erik Vanem 3. dan Aikikai</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -424,13 +422,13 @@ new menu (mainmenu_MENU_ITEMS, mainmenu_MENU_POS);
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://aikidude.files.wordpress.com/2008/02/erik_vanem_200803.pdf">http://aikidude.files.wordpress.com/2008/02/erik_vanem_200803.pdf</a></td></tr>
 
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
-	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Fudoshinkan Hamar og Hadeland har den glede av å invitetere for 4. gang til seminar med Sensei George Koliopoulos (5. dan Aikikai) på på Vestoppland Folkehøgskole. 
-Det blir også Bokken Dori og JoDori trening og det oppfordres derfor til å ta med seg Bokken og Jo. Det vil bli fokus på KI utviklingsøvelser, KI Breathing etc. 
+	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Fudoshinkan Hamar og Hadeland har den glede av å invitetere for 4. gang til seminar med Sensei George Koliopoulos (5. dan Aikikai) på på Vestoppland Folkehøgskole.
+Det blir også Bokken Dori og JoDori trening og det oppfordres derfor til å ta med seg Bokken og Jo. Det vil bli fokus på KI utviklingsøvelser, KI Breathing etc.
 Se hjemmeside Fudoshinkan Hadeland for flere opplysniger.
 </b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -441,13 +439,13 @@ Se hjemmeside Fudoshinkan Hadeland for flere opplysniger.
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">jensmartinsen@hotmail.com</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.fudoshinkan.net/hadeland_new/Seminar_George2008.pdf">http://www.fudoshinkan.net/hadeland_new/Seminar_George2008.pdf</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 
 				<tr><td class="month"><b>April</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Aikidoseminar med Erik Vanem.</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -458,15 +456,15 @@ Se hjemmeside Fudoshinkan Hadeland for flere opplysniger.
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">sverre.johnsen@trondheimaikido.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.trondheimaikido.no/vanem08.pdf">http://www.trondheimaikido.no/vanem08.pdf</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 
-	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>BUDOSEMINAR med Bjørn Eirik Olsen 6.dan.  
-Velkommen til en aikidoleir med fokus på sverd, mental utvikling mykhet og styrking av hara. Ta med bokken.  
-Ingen påmelding nødvendig.   
+	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>BUDOSEMINAR med Bjørn Eirik Olsen 6.dan.
+Velkommen til en aikidoleir med fokus på sverd, mental utvikling mykhet og styrking av hara. Ta med bokken.
+Ingen påmelding nødvendig.
 
 </b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -477,10 +475,10 @@ Ingen påmelding nødvendig.
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">post ved tenshinkan.aikido.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86">http://www.kashima.no/index.php?option=com_content&view=article&id=61&Itemid=86</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Birger Sørensen 5.dan</b></td></tr>
@@ -492,10 +490,10 @@ Ingen påmelding nødvendig.
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">info@aikidojo.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.aikidojo.no/Flyers/birger.pdf">http://www.aikidojo.no/Flyers/birger.pdf</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>BARNEAIKIDO: seminar i hvordan legge tilrette for barnetrening innen aikido.
 
@@ -511,12 +509,12 @@ Teori og praktiske øvelser basert på mangeårig erfaring med \"budo og barn\" 
 
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href=""></a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>Mai</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Leir med Frank Ostoff 5.dan</b></td></tr>
 
@@ -528,10 +526,10 @@ Teori og praktiske øvelser basert på mangeårig erfaring med \"budo og barn\" 
 
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.tekisuikan.org">http://www.tekisuikan.org</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Philippe Orban 6.dan hos Aikikan Oslo.
 Gratis overnatting i dojo.</b></td></tr>
@@ -544,10 +542,10 @@ Gratis overnatting i dojo.</b></td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.aikikanoslo.no">http://www.aikikanoslo.no</a></td></tr>
 
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Oslo Aikido Festival 2008</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -558,19 +556,19 @@ Gratis overnatting i dojo.</b></td></tr>
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">erik@osloaikido.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.osloaikido.no">http://www.osloaikido.no</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 
 				<tr><td class="month"><b>Juni</b></td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>Juli</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Summercamp 2008 with Suganuma sensei.
 
-Seminar at Brandbu, 70 km north of Oslo. 
+Seminar at Brandbu, 70 km north of Oslo.
 
  </b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -582,12 +580,12 @@ Seminar at Brandbu, 70 km north of Oslo.
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href=""></a></td></tr>
 	</table>
 
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>August</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Treningsleir med Inaba Sensei fra Meiji Jingu Shiseikan i Tokyo. Fokus vil bli på sverdtrening (Kashima Shinryu) og essensen av Budo.</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -599,12 +597,12 @@ Seminar at Brandbu, 70 km north of Oslo.
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.kashima.no">http://www.kashima.no</a></td></tr>
 
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>September</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Harstad Aikido klubb inviterer til trenings helg med Jiri Marek (en av Nishio-sensei elever,   4.dan Aikikai, og 3.dan Aikido Toho Iai) og AIKIDO TOHO IAI.
 
@@ -618,12 +616,12 @@ Seminar at Brandbu, 70 km north of Oslo.
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.harstadaikido.org/nedlasting/HAK-ATI-seminar-no.pdf">http://www.harstadaikido.org/nedlasting/HAK-ATI-seminar-no.pdf</a></td></tr>
 
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
-	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>JAPAN 2008: 
+	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>JAPAN 2008:
 Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF seminar i Tanabe</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
 27-12.	</td></tr>
@@ -633,13 +631,13 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">erik@osloaikido.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.osloaikido.no">http://www.osloaikido.no</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 
 				<tr><td class="month"><b>Oktober</b></td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Donovan Waite, 7.dan shihan Aikikai</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -650,10 +648,10 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">info@aikidojo.no</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.aikidojo.no">http://www.aikidojo.no</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Frank Ostoff 5. dan.</b></td></tr>
@@ -665,13 +663,13 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">tor.gaarder@gmail.com   Tlf: 95248050</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.sentrumaikido.org/kalender.php">http://www.sentrumaikido.org/kalender.php</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>November</b></td></tr>
 
-	 
- 						<tr><td class="activity">			 
+
+ 						<tr><td class="activity">
 	<table border="0">
 	<tr><td class="activitylegend">Hva:</td><td class="activity"><b>Leir med Jan Nevelius 6.dan</b></td></tr>
 	<tr><td class="activitylegend">Når:</td><td class="activity">
@@ -682,7 +680,7 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 	<tr><td class="activitylegend">Kontakt:</td><td class="activity">silje.skrede@gmail.com</td></tr>
 	<tr><td class="activitylegend">Mer info:</td><td class="activity"><a class="info" href="http://www.tekisuikan.org">http://www.tekisuikan.org</a></td></tr>
 	</table>
-</td></tr>						
+</td></tr>
   		  	  			<tr><td class="activity">&nbsp;</td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 				<tr><td class="month"><b>Desember</b></td></tr>
@@ -694,11 +692,11 @@ Vi reiser sammen til Japan for å trene på Hombu Dojo i Tokyo og delta på IAF 
 				<tr><td class="month"><b>Februar</b></td></tr>
 			<tr><td class="separator" colspan="4" bgcolor="#cecece"></td></tr>
 		</table>
-	
+
 	<br>
 
-	
-	
+
+
 	<table width="100%">
 	<tr><td class="title"><b>Aktiviteter lenger frem i tid</b></td></tr>
 		</table>
@@ -740,6 +738,3 @@ PAGESRC
 end
 
 end
-
-
-
