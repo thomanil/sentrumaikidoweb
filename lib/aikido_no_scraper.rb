@@ -18,6 +18,7 @@ module SentrumAikido
 
 
     def src_to_activities(cal_html_src)
+      puts cal_html_src
       return [1,2,3,4,5]
     end
 
