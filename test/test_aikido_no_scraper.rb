@@ -4,20 +4,15 @@ require File.dirname(__FILE__) + '/test_helper.rb'
 
 class TestCalScraper < Test::Unit::TestCase
 
+
   def setup
     @scraper = SentrumAikido::AikidoNoScraper.new
   end
 
-  def test_get_calendar_src
-    testcal = @scraper.get_calendar_src
-    assert testcal =~ /body/, "Expected naf cal page to include body tag"
-    assert testcal =~ /html/, "Expected naf cal page to include html tag"
-    assert testcal =~ /month/, "Expected naf cal page to include at least one tag with 'month' class"
-  end
-
-  def test_transform_calendar_src_into_activity_hash
-    activities = @scraper.src_to_activities(test_calendar_src)
-    #assert_equal 22, activities.count
+  def test_get_calendar_json()
+    testcal = @scraper.get_calendar_json("http://aikido.no/api/v1/event/?username=thomas.kjeldahl.nilsson&api_key=e6416d24107a8fdb010d4d43b226f5d4bb69a410")
+    assert testcal =~ /objects/, "Expected naf cal page to include objects"
+    assert testcal =~ /arranger/, "Expected naf cal page to include arrangers"
   end
 
   def test_create_table_row
@@ -39,9 +34,9 @@ class TestCalScraper < Test::Unit::TestCase
   def test_scrape_calendar
     scraped = @scraper.scrape_calendar()
 
-    assert scraped =~ /table/, "Expected table in scraped calendar"
-    assert scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar"
-    assert scraped =~ /uttrekk/, "Expected 'uttrekk' string in scraped calendar"
+    #assert scraped =~ /table/, "Expected table in scraped calendar"
+    #assert scraped =~ /Tidspunkt/, "Expected 'tidspunkt' string in scraped calendar"
+    #assert scraped =~ /uttrekk/, "Expected 'uttrekk' string in scraped calendar"
   end
 
   def test_shorten_url
@@ -67,831 +62,341 @@ class TestCalScraper < Test::Unit::TestCase
 
   ### TESTDATA ####
 
-  def test_calendar_src
-    return <<PAGESRC
-
-<!DOCTYPE html>
-
-
-<html>
-
-    <head>
-
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <title>Kalender | Aikido.no</title>
-        <meta name="keywords" content="" />
-        <meta name="description" content="En flott ting med aikido er at vi ofte får besøk av flinke instruktører både fra innland og utland som vil vise oss litt av hvordan de trener aikido. Her er hva som skjer fremover." />
-        <meta name="viewport" content="width=device-width"/>
-
-
-            <link rel="alternate" type="application/rss+xml" title="RSS" href="/artikler/feeds/rss/" />
-            <link rel="alternate" type="application/atom+xml" title="Atom" href="/artikler/feeds/atom/" />
-
-
-
-        <link rel="stylesheet" href="/static/CACHE/css/b097296d894a.css" type="text/css" />
-
-
-        <link rel="stylesheet" href="/static/CACHE/css/e1d1995e432b.css" type="text/css" /><link rel="stylesheet" href="/static/CACHE/css/1def7b9964e9.css" type="text/css" media="screen" />
-
-
-        <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/smoothness/jquery-ui.css" />
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/i18n/jquery-ui-i18n.min.js"></script>
-
-
-        <link href="//fonts.googleapis.com/css?family=Cardo:400,700,400italic|Source+Sans+Pro:400,300,600&subset=latin,latin-ext" rel="stylesheet" type="text/css" />
-
-
-
-
-            <script type="text/javascript" src="/jsi18n/"></script>
-            <script type="text/javascript" src="/static/CACHE/js/b84caccae2f6.js"></script>
-
-
-        <!--[if lt IE 9]>
-            <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-    </head>
-
-    <body>
-
-        <div id="body">
-
-            <div id="leftmenu">
-
-                <a id="skip-to-content" href="#main">Hopp til innhold</a>
-
-                <div id="login">
-                    <a id="toggle-navigation" href="javascript:;">Navigasjon</a>
-
-                        <a href="/bruker/logg-inn/">Logg inn</a>
-                        <a href="/bruker/ny/">Opprett bruker</a>
-
-                </div>
-
-                <div id="logo">
-                    <a href="/"><img src="/static/img/logo.png" /></a>
-                </div>
-
-                <form id="search" action="/sok/" method="get">
-                    <input name="q" placeholder="søk..."/>
-                    <button></button>
-                </form>
-
-                <nav>
-                    <ul>
-                        <li class="nav"><h2>Navigasjon</h2><a href="javascript:;">Lukk</a></li>
-
-
-<li><a class="" href="/">Forside</a></li><li class=""><a class="" href="/om-aikido/">Om aikido</a></li><li class=""><a class="" href="/organisasjoner/">Organisasjoner</a><ul><li class=""><a class="" href="/organisasjoner/norges-aikidoforbund/">Norges Aikidoforbund</a><ul><li class=""><a class="" href="/organisasjoner/norges-aikidoforbund/statutter/">Statutter for Norges Aikidoforbund</a></li><li class=""><a class="" href="/organisasjoner/norges-aikidoforbund/gradering/">Gradering</a></li><li class=""><a class="" href="/organisasjoner/norges-aikidoforbund/avgifter%C3%B8konomi/">Avgifter/Økonomi</a></li><li class=""><a class="" href="/organisasjoner/norges-aikidoforbund/teknisk-kommite/">Teknisk Komitè</a></li></ul></li><li class=""><a class="" href="/organisasjoner/aikikan/">Aikikan Norge</a></li></ul></li><li class=""><a class="active leaf" href="/kalender/">Kalender</a></li><li class=""><a class="" href="/klubber/">Klubber</a></li><li class=""><a class="" href="/skjema/">Skjemaer</a></li><li class=""><a class="" href="/dokumenter/">Dokumenter</a></li><li class=""><a class="" href="/lenker/">Lenker</a></li><li class=""><a class="" href="/bli-med-og-tren-aikido/">Bli med og tren aikido!</a><ul><li class=""><a class="" href="/bli-med-og-tren-aikido/starte-aikidoklubb/">Om å starte Aikidoklubb</a></li></ul></li><li class=""><a class="" href="/galleri/">Galleri</a></li><li class=""><a class="" href="/om/">Om aikido.no</a></li>
-
-
-
-                    </ul>
-                </nav>
-
-            </div>
-
-            <div id="main">
-
-                <h1>
-Kalender
-</h1>
-
-
-
-
-
-
-
-
-
-<p>En flott ting med aikido er at vi ofte får besøk av flinke instruktører både fra innland og utland som vil vise oss litt av hvordan de trener aikido. Her er hva som skjer fremover.</p>
-<h3>Skal du arrangere eller vet om en (i Norge) som ikke er listet?</h3>
-<p>Meld inn en ny aikidobegivenhet under <a href="/kalender/meld-inn/">kalender/meld-inn</a></p>
-
-
-
-
-    <table id="calendar" class="horizontal">
-
-
-
-            <tbody><tr span="2"><td><h2 class="event_year">2013</h2></td></tr></tbody>
-
-
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Oktober</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="23">Seminar med Mouliko Halén (6. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">4. oktober 2013</span> &mdash; <span class="nowrap">6. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Hovebakken 7, 4306 Sandnes</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Sandnes Aikido Dojo </td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:sunyatasandnes@gmail.com">sunyatasandnes@gmail.com</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.facebook.com/events/495518883862882/">http://www.facebook.com/events/495518883862882/</a></div>
-
-                                        <div><a href="http://www.sunyatasandnes.no/en/eventes/pdf/international_seminar_with_mouliko_halen_sensei.pdf">http://www.sunyatasandnes.no/en/eventes/pdf/international_seminar_with_mouliko_halen_sensei.pdf</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="6">Seminar med Bjørn Eirik Olsen Shihan (6.dan)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">5. oktober 2013</span> &mdash; <span class="nowrap">6. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Bredalsmarken 17, Bergen.</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Bergen Aikidoklubb</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:oystein@alsaker.org">oystein@alsaker.org</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="https://www.facebook.com/events/628896360462039/">https://www.facebook.com/events/628896360462039/</a></div>
-
-                                        <div><a href="http://www.bergenaikido.no/seminar-med-bjorn-eirik-olsen-shihan-5-6-oktober/">http://www.bergenaikido.no/seminar-med-bjorn-eirik-olsen-shihan-5-6-oktober/</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="31">Dagsseminar med Mouliko Halén (6. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">12. oktober 2013</span> &mdash; <span class="nowrap">12. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Aikido Dojo Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mouliko@online.no">mouliko@online.no</a></td>
-                        </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="7">Seminar med Philippe Orban (6.dan) Halv pris for nybegynnere under 4. kyu</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">18. oktober 2013</span> &mdash; <span class="nowrap">20. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Aikikan Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:post@aikikanoslo.no">post@aikikanoslo.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.facebook.com/events/368318903270510/">http://www.facebook.com/events/368318903270510/</a></div>
-
-                                        <div><a href="http://www.aikikanoslo.no/leirinfo">http://www.aikikanoslo.no/leirinfo</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="9">Seminar with Thorsten Schoo (5. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">25. oktober 2013</span> &mdash; <span class="nowrap">27. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Tenshinkan Aikidoklubb (Oslo)</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:kontakt@tenshinkan.no">kontakt@tenshinkan.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="https://www.facebook.com/events/196127270562871/">https://www.facebook.com/events/196127270562871/</a></div>
-
-                                        <div><a href="http://tenshinkan.no/wp-content/uploads/2012/11/Invit-Thorsten-Schoo25_271013.pdf">http://tenshinkan.no/wp-content/uploads/2012/11/Invit-Thorsten-Schoo25_271013.pdf</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="8">Seminar med Jiri Novotny, 4. dan Aikikai</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">25. oktober 2013</span> &mdash; <span class="nowrap">27. oktober 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Trondheim, Dragvoll Idrettssenter</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>NTNUI Aikido</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mwarholm_at_gmail.com">mwarholm_at_gmail.com</a></td>
-                        </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">November</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="21">Seminar med Jorma Lyly (5. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">1. november 2013</span> &mdash; <span class="nowrap">3. november 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td> Heggedal fabrikker, Åmotveien 2 (nye hallene, bygg 11)</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Aikido Dojo Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mouliko@online.no">mouliko@online.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="https://www.facebook.com/events/181879888658217/">https://www.facebook.com/events/181879888658217/</a></div>
-
-                                        <div><a href="http://www.sunyata-aikido.org/heggedal/?page_id=90">http://www.sunyata-aikido.org/heggedal/?page_id=90</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="10">Seminar med Dirk Müller Sensei (6. dan Aikikai) (NB: torsdagskveld, trening med Dirk Müller på Heggedal!)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">7. november 2013</span> &mdash; <span class="nowrap">10. november 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Horten (fre-lør-søn) &amp; Heggedal (tor)</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Renshin Aikido Dojo Horten</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:kontakt-oss@renshin-aikido.no">kontakt-oss@renshin-aikido.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.renshin-aikido.no/pdf/dirk-muller-2013-poster.pdf">http://www.renshin-aikido.no/pdf/dirk-muller-2013-poster.pdf</a></div>
-
-                                        <div><a href="http://www.facebook.com/events/299505773498038/">http://www.facebook.com/events/299505773498038/</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="11">Seminar med Jan Nevelius Shihan (6. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">22. november 2013</span> &mdash; <span class="nowrap">24. november 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>NTNUI Aikido</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mwarholm_at_gmail.com">mwarholm_at_gmail.com</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.ntnui.no/aikido/seminar.php">http://www.ntnui.no/aikido/seminar.php</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="18">Våpenleir (jo og bokken) med Odd Ringstad (4. dan Aikikai). Pensum blir tilpasset de som kommer</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">30. november 2013</span> &mdash; <span class="nowrap">1. desember 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Konghellegata 3, Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Aikikan Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:post@aikikanoslo.no">post@aikikanoslo.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.aikikanoslo.no/leirinfo">http://www.aikikanoslo.no/leirinfo</a></div>
-
-                                </td>
-                            </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Desember</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="32">Seminar med Mouliko Halén (6. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">13. desember 2013</span> &mdash; <span class="nowrap">15. desember 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Aikido Dojo Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mouliko@online.no">mouliko@online.no</a></td>
-                        </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="12">Seminar med Matti Joensuu (6. dan Aikikai, Endo-student)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">13. desember 2013</span> &mdash; <span class="nowrap">15. desember 2013</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Tvetenveien 32B, Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Oslo Aikido Klubb</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:info@osloaikido.no">info@osloaikido.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.osloaikido.no/treningsleir-med-matti-joensuu-6-dan/?lang=en">http://www.osloaikido.no/treningsleir-med-matti-joensuu-6-dan/?lang=en</a></div>
-
-                                        <div><a href="https://www.facebook.com/events/429467477157772">https://www.facebook.com/events/429467477157772</a></div>
-
-                                </td>
-                            </tr>
-
-
-                </tbody>
-
-
-            <tbody><tr span="2"><td><h2 class="event_year">2014</h2></td></tr></tbody>
-
-
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Januar</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="24">Nyttårsseminar med Bjørn Eirik Olsen Shihan (6. dan Aikikai) </h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">3. januar 2014</span> &mdash; <span class="nowrap">5. januar 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Tenshinkan Aikidoklubb, Bentsebrugt. 13 H, Oslo  </td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Tenshinkan Aikidoklubb (Oslo)</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:post_at_tenshinkan.no ">post_at_tenshinkan.no </a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://tenshinkan.no/wp-content/uploads/2013/08/Invit_BEOleir_03_050114.pdf">http://tenshinkan.no/wp-content/uploads/2013/08/Invit_BEOleir_03_050114.pdf</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="19">Våpenleir (jo og bokken) med Odd Ringstad (4. dan Aikikai). Pensum blir tilpasset de som kommer</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">11. januar 2014</span> &mdash; <span class="nowrap">12. januar 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Konghellegata 3, Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Aikikan Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:post@aikikanoslo.no">post@aikikanoslo.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.aikikanoslo.no/leirinfo">http://www.aikikanoslo.no/leirinfo</a></div>
-
-                                </td>
-                            </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Mai</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="25">Fjords&#39;n&#39;Aikido Seminar med Fabrice Somers (5. dan Aikikai, Endo-student)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">1. mai 2014</span> &mdash; <span class="nowrap">4. mai 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>JuShinKan dojo, Lagårdsveien 91, Stavanger</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Stavanger JūShinKan Aikido</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:stavangeraikido@gmail.com">stavangeraikido@gmail.com</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://stavangeraikido.wordpress.com/">http://stavangeraikido.wordpress.com/</a></div>
-
-                                </td>
-                            </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="15">Seminar med Jorma Lyly (5. dan Aikikai)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">9. mai 2014</span> &mdash; <span class="nowrap">11. mai 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Trondheim, Dragvoll Idrettssenter</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>NTNUI Aikido</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mwarholm_at_gmail.com">mwarholm_at_gmail.com</a></td>
-                        </tr>
-
-
-                        <tr>
-                            <td colspan="2"><h4 id="13">Våpenleir (jo og bokken) med Odd Ringstad (4. dan Aikikai). Pensum blir tilpasset de som kommer</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">24. mai 2014</span> &mdash; <span class="nowrap">25. mai 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Konghellegata 3, Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Aikikan Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:post@aikikanoslo.no">post@aikikanoslo.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.aikikanoslo.no/leirinfo">http://www.aikikanoslo.no/leirinfo</a></div>
-
-                                </td>
-                            </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Juni</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="33">Aikido summer camp in Moelv (Mouliko Halén, Jorma Lyly, Mats Ahlin)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">5. juni 2014</span> &mdash; <span class="nowrap">8. juni 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Moelv</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Aikido Dojo Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mouliko@online.no">mouliko@online.no</a></td>
-                        </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Juli</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="34">Aikido superweek med Mouliko Halén (6. dan)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">10. juli 2014</span> &mdash; <span class="nowrap">17. juli 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Sunyata Aikido Dojo Heggedal</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:mouliko@online.no">mouliko@online.no</a></td>
-                        </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">August</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="28">Fjords&#39;n&#39;Aikido Seminar med Marc Bachraty (5. dan Aikikai, Tissier-student)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">28. august 2014</span> &mdash; <span class="nowrap">31. august 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Stavanger (hall annonseres senere)</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Stavanger JūShinKan Aikido</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:stavangeraikido@gmail.com">stavangeraikido@gmail.com</a></td>
-                        </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">September</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="30">Seminar med Juhani Laisi (6. dan Aikikai, Endo student) - Trippeljubileum! - (NB: torsdagskveld, trening med Juhani Laisi på Oslo Aikidoklubb!)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">18. september 2014</span> &mdash; <span class="nowrap">21. september 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Sho Gaku dojo, Hamar (fre-lør-søn) &amp; Oslo Aikido klubb (tor)</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Hamar Aikido Klubb</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:eivind@hamaraikido.no">eivind@hamaraikido.no</a></td>
-                        </tr>
-
-                            <tr>
-                                <th>Nettlenke</th>
-                                <td>
-
-                                        <div><a href="http://www.hamaraikido.no/index.html">http://www.hamaraikido.no/index.html</a></div>
-
-                                        <div><a href="http://www.facebook.com/events/1406253249603562/">http://www.facebook.com/events/1406253249603562/</a></div>
-
-                                </td>
-                            </tr>
-
-
-                </tbody>
-
-                <tbody>
-                    <tr>
-                        <td colspan="2"><h3 class="event_month">Oktober</h3></td>
-                    </tr>
-
-                        <tr>
-                            <td colspan="2"><h4 id="35">Seminar with Takanori Kuribayashi Shihan (7. dan fra Hombu)</h4></td>
-                        </tr>
-                        <tr>
-                            <th>Når</th>
-                            <td><span class="nowrap">31. oktober 2014</span> &mdash; <span class="nowrap">2. november 2014</span></td>
-                        </tr>
-                        <tr>
-                            <th>Sted</th>
-                            <td>Oslo</td>
-                        </tr>
-                        <tr>
-                            <th>Arrangør</th>
-                            <td>Oslo Aikido Klubb</td>
-                        </tr>
-                        <tr>
-                            <th>Kontakt</th>
-                            <td><a href="mailto:erik@osloaikido.no">erik@osloaikido.no</a></td>
-                        </tr>
-
-
-                </tbody>
-
-
-    </table>
-
-
-
-            </div>
-
-        </div>
-
-        <br style="clear:both" />
-
-        <script>
-
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-42887977-1', 'aikido.no');
-    ga('send', 'pageview');
-
-</script>
-
-
-    </body>
-
-</html>
-PAGESRC
-end
+  def test_calendar_json
+    return <<JSON
+{
+   "meta":{
+      "limit":20,
+      "next":"/api/v1/event/?username=thomas.kjeldahl.nilsson&api_key=e6416d24107a8fdb010d4d43b226f5d4bb69a410&limit=20&offset=20",
+      "offset":0,
+      "previous":null,
+      "total_count":38
+   },
+   "objects":[
+      {
+         "arranger":{
+            "city":"Heggedal",
+            "email":"",
+            "name":"Sunyata Aikido Dojo Heggedal",
+            "phone":"",
+            "position":"59.7852933,10.434072",
+            "resource_uri":"/api/v1/club/1/"
+         },
+         "contact":"mouliko@online.no",
+         "end":"2013-06-09",
+         "location":null,
+         "resource_uri":"/api/v1/event/1/",
+         "start":"2013-06-06",
+         "title":"Aikido Summer Camp with Mouliko HalÃ©n, Jorma Lyly and Mats Ahlin"
+      },
+      {
+         "arranger":{
+            "city":"Bergen",
+            "email":"post@bergen-aikidoklubb.com",
+            "name":"Bergen Aikidoklubb",
+            "phone":"95014938",
+            "position":"60.3912628,5.3220544",
+            "resource_uri":"/api/v1/club/2/"
+         },
+         "contact":"steffenwikan@gmail.com",
+         "end":"2013-06-23",
+         "location":null,
+         "resource_uri":"/api/v1/event/2/",
+         "start":"2013-06-21",
+         "title":"Seminar med Dimitris Farmakidis 3. Dan Aikikai."
+      },
+      {
+         "arranger":{
+            "city":"Brandbu",
+            "email":null,
+            "name":"Norges Aikido Forbund",
+            "phone":null,
+            "position":"60.4186361,10.4996659",
+            "resource_uri":"/api/v1/club/3/"
+         },
+         "contact":"kjetil.hatlebrekke@hotmail.com",
+         "end":"2013-07-11",
+         "location":null,
+         "resource_uri":"/api/v1/event/3/",
+         "start":"2013-07-06",
+         "title":"NAF Sommerleir med Takemura Sensei (6.) og BjÃ¸rn Eirik Olsen Shihan (6.)"
+      },
+      {
+         "arranger":{
+            "city":"Heggedal",
+            "email":"",
+            "name":"Sunyata Aikido Dojo Heggedal",
+            "phone":"",
+            "position":"59.7852933,10.434072",
+            "resource_uri":"/api/v1/club/1/"
+         },
+         "contact":"mouliko@online.no",
+         "end":"2013-07-18",
+         "location":null,
+         "resource_uri":"/api/v1/event/4/",
+         "start":"2013-07-11",
+         "title":"Superweek with Mouliko HalÃ©n (6. dan)"
+      },
+      {
+         "arranger":{
+            "city":"Trondheim",
+            "email":"aikido@stud.ntnu.no",
+            "name":"NTNUI Aikido",
+            "phone":"",
+            "position":"63.4067583495,10.4749048318",
+            "resource_uri":"/api/v1/club/8/"
+         },
+         "contact":"mwarholm_at_gmail.com",
+         "end":"2013-10-27",
+         "location":"Trondheim, Dragvoll Idrettssenter",
+         "resource_uri":"/api/v1/event/8/",
+         "start":"2013-10-25",
+         "title":"Seminar med Jiri Novotny, 4. dan Aikikai"
+      },
+      {
+         "arranger":{
+            "city":"Trondheim",
+            "email":"aikido@stud.ntnu.no",
+            "name":"NTNUI Aikido",
+            "phone":"",
+            "position":"63.4067583495,10.4749048318",
+            "resource_uri":"/api/v1/club/8/"
+         },
+         "contact":"mwarholm_at_gmail.com",
+         "end":"2013-11-24",
+         "location":null,
+         "resource_uri":"/api/v1/event/11/",
+         "start":"2013-11-22",
+         "title":"Seminar med Jan Nevelius Shihan (6. dan Aikikai)"
+      },
+      {
+         "arranger":{
+            "city":"Oslo",
+            "email":"",
+            "name":"Aikikan Oslo",
+            "phone":"91644855",
+            "position":"59.9297591,10.7790288",
+            "resource_uri":"/api/v1/club/26/"
+         },
+         "contact":"post@aikikanoslo.no",
+         "end":"2013-09-08",
+         "location":"Konghellegata 3, Oslo",
+         "resource_uri":"/api/v1/event/17/",
+         "start":"2013-09-07",
+         "title":"VÃ¥penleir (jo og bokken) med Odd Ringstad (4. dan Aikikai). Pensum blir tilpasset de som kommer"
+      },
+      {
+         "arranger":{
+            "city":"Oslo",
+            "email":"info@osloaikido.no",
+            "name":"Oslo Aikido Klubb",
+            "phone":"99273276",
+            "position":"59.9245509,10.6758222",
+            "resource_uri":"/api/v1/club/13/"
+         },
+         "contact":"info@osloaikido.no",
+         "end":"2013-12-15",
+         "location":"Tvetenveien 32B, Oslo",
+         "resource_uri":"/api/v1/event/12/",
+         "start":"2013-12-13",
+         "title":"Seminar med Matti Joensuu (6. dan Aikikai, Endo-student)"
+      },
+      {
+         "arranger":{
+            "city":"Stavanger",
+            "email":"stavangeraikido@gmail.com",
+            "name":"Stavanger JÅ«ShinKan Aikido",
+            "phone":"98250628",
+            "position":"58.9570615,5.7398973",
+            "resource_uri":"/api/v1/club/18/"
+         },
+         "contact":"stavangeraikido@gmail.com",
+         "end":"2014-08-31",
+         "location":"Stavanger (hall annonseres senere)",
+         "resource_uri":"/api/v1/event/28/",
+         "start":"2014-08-28",
+         "title":"Fjords'n'Aikido Seminar med Marc Bachraty (5. dan Aikikai, Tissier-student)"
+      },
+      {
+         "arranger":{
+            "city":"Oslo",
+            "email":"post@tenshinkan.no",
+            "name":"Tenshinkan Aikidoklubb (Oslo)",
+            "phone":"92290101",
+            "position":"59.9138688,10.7522454",
+            "resource_uri":"/api/v1/club/14/"
+         },
+         "contact":"post_at_tenshinkan.no ",
+         "end":"2014-01-05",
+         "location":"Tenshinkan Aikidoklubb, Bentsebrugt. 13 H, Oslo  ",
+         "resource_uri":"/api/v1/event/24/",
+         "start":"2014-01-03",
+         "title":"NyttÃ¥rsseminar med BjÃ¸rn Eirik Olsen Shihan (6. dan Aikikai) "
+      },
+      {
+         "arranger":{
+            "city":"Trondheim",
+            "email":"aikido@stud.ntnu.no",
+            "name":"NTNUI Aikido",
+            "phone":"",
+            "position":"63.4067583495,10.4749048318",
+            "resource_uri":"/api/v1/club/8/"
+         },
+         "contact":"mwarholm_at_gmail.com",
+         "end":"2014-05-11",
+         "location":"Trondheim, Dragvoll Idrettssenter",
+         "resource_uri":"/api/v1/event/15/",
+         "start":"2014-05-09",
+         "title":"Seminar med Jorma Lyly (5. dan Aikikai)"
+      },
+      {
+         "arranger":{
+            "city":"Stavanger",
+            "email":"stavangeraikido@gmail.com",
+            "name":"Stavanger JÅ«ShinKan Aikido",
+            "phone":"98250628",
+            "position":"58.9570615,5.7398973",
+            "resource_uri":"/api/v1/club/18/"
+         },
+         "contact":"stavangeraikido@gmail.com",
+         "end":"2013-09-08",
+         "location":"JuShinKan dojo eller HundvÃ¥ghallen",
+         "resource_uri":"/api/v1/event/16/",
+         "start":"2013-09-06",
+         "title":"Seminar med Marc Bachraty (5. dan Aikikai, Tissier-student)"
+      },
+      {
+         "arranger":{
+            "city":"Sandnes",
+            "email":"sunyatasandnes@gmail.com",
+            "name":"Sunyata Sandnes Aikido Dojo ",
+            "phone":"95271653",
+            "position":"58.836994,5.7306828",
+            "resource_uri":"/api/v1/club/31/"
+         },
+         "contact":"sunyatasandnes@gmail.com",
+         "end":"2013-10-06",
+         "location":"Hovebakken 7, 4306 Sandnes",
+         "resource_uri":"/api/v1/event/23/",
+         "start":"2013-10-04",
+         "title":"Seminar med Mouliko HalÃ©n (6. dan Aikikai)"
+      },
+      {
+         "arranger":{
+            "city":"Hamar",
+            "email":"eivind@hamaraikido.no",
+            "name":"Hamar Aikido Klubb",
+            "phone":"6250 9802 / 900 33 645",
+            "position":"60.8647726,11.2218735",
+            "resource_uri":"/api/v1/club/22/"
+         },
+         "contact":"Eivind@hamaraikido.no",
+         "end":"2013-09-22",
+         "location":"",
+         "resource_uri":"/api/v1/event/5/",
+         "start":"2013-09-19",
+         "title":"Seminar med Juhani Laisi Shihan (6. dan, student av Endo sensei) - med torsdagstrening hos Oslo aikidoklubb"
+      },
+      {
+         "arranger":{
+            "city":"Hamar",
+            "email":"eivind@hamaraikido.no",
+            "name":"Hamar Aikido Klubb",
+            "phone":"6250 9802 / 900 33 645",
+            "position":"60.8647726,11.2218735",
+            "resource_uri":"/api/v1/club/22/"
+         },
+         "contact":"eivind@hamaraikido.no",
+         "end":"2014-09-21",
+         "location":"Sho Gaku dojo, Hamar (fre-lÃ¸r-sÃ¸n) & Oslo Aikido klubb (tor)",
+         "resource_uri":"/api/v1/event/30/",
+         "start":"2014-09-18",
+         "title":"Seminar med Juhani Laisi (6. dan Aikikai, Endo student) - Trippeljubileum! - (NB: torsdagskveld, trening med Juhani Laisi pÃ¥ Oslo Aikidoklubb!)"
+      },
+      {
+         "arranger":{
+            "city":"Heggedal",
+            "email":"",
+            "name":"Sunyata Aikido Dojo Heggedal",
+            "phone":"",
+            "position":"59.7852933,10.434072",
+            "resource_uri":"/api/v1/club/1/"
+         },
+         "contact":"mouliko@online.no",
+         "end":"2013-11-03",
+         "location":" Heggedal fabrikker, Ã…motveien 2 (nye hallene, bygg 11)",
+         "resource_uri":"/api/v1/event/21/",
+         "start":"2013-11-01",
+         "title":"Seminar med Jorma Lyly (5. dan Aikikai)"
+      },
+      {
+         "arranger":{
+            "city":"Bergen",
+            "email":"post@bergen-aikidoklubb.com",
+            "name":"Bergen Aikidoklubb",
+            "phone":"95014938",
+            "position":"60.3912628,5.3220544",
+            "resource_uri":"/api/v1/club/2/"
+         },
+         "contact":"oystein@alsaker.org",
+         "end":"2013-10-06",
+         "location":"Bredalsmarken 17, Bergen.",
+         "resource_uri":"/api/v1/event/6/",
+         "start":"2013-10-05",
+         "title":"Seminar med BjÃ¸rn Eirik Olsen Shihan (6.dan)"
+      },
+      {
+         "arranger":{
+            "city":"Ã…lesund",
+            "email":"kontakt@kiaikido.no",
+            "name":"Aikido Yuishinkai Ã…lesund",
+            "phone":"98830700",
+            "position":"62.4722284,6.149482",
+            "resource_uri":"/api/v1/club/24/"
+         },
+         "contact":"espen.bratseth@mimer.no",
+         "end":"2013-08-22",
+         "location":"SjÃ¸mannsveien 27, 6003 Ã…lesund",
+         "resource_uri":"/api/v1/event/20/",
+         "start":"2013-09-20",
+         "title":"Aikido Seminar med William Reed (7. dan Yuishinkai)"
+      },
+      {
+         "arranger":{
+            "city":"Haugesund",
+            "email":"styrethak@googlegroups.com",
+            "name":"Haugesund Aikidoklubb",
+            "phone":"92402027",
+            "position":"59.413581,5.2679869",
+            "resource_uri":"/api/v1/club/17/"
+         },
+         "contact":"styrethak@googlegroups.com",
+         "end":"2013-09-15",
+         "location":"Klubbens dojo, i bomberommet ved Lotheparkveien 14, Haugesund.",
+         "resource_uri":"/api/v1/event/27/",
+         "start":"2013-09-13",
+         "title":"Seminar med Kim A. Tinderholt (2.dan Aikikai) - Teknisk ansvarlig for Bergen & Haugesund Aikidoklubb"
+      },
+      {
+         "arranger":{
+            "city":"Heggedal",
+            "email":"",
+            "name":"Sunyata Aikido Dojo Heggedal",
+            "phone":"",
+            "position":"59.7852933,10.434072",
+            "resource_uri":"/api/v1/club/1/"
+         },
+         "contact":"mouliko@online.no",
+         "end":"2013-09-01",
+         "location":" Heggedal fabrikker, Ã…motveien 2 (nye hallene, bygg 11)",
+         "resource_uri":"/api/v1/event/22/",
+         "start":"2013-08-30",
+         "title":"Sunyata Aikido feirer Mouliko HalÃ¨ns 40 Ã¥rs fartstid innen Aikido! Det blir treningsseminar  holdt av jubilanten selv, pluss andre inviterte instruktÃ¸rer."
+      }
+   ]
+}
+
+JSON
+  end
 
 end

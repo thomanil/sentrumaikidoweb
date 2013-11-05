@@ -2,38 +2,46 @@
 module SentrumAikido
   class AikidoNoScraper
 
-    CALENDAR_URL = "http://aikido.no/kalender"
+    EVENTS_JSON_URL = "http://aikido.no/api/v1/event/?username=thomas.kjeldahl.nilsson&api_key=e6416d24107a8fdb010d4d43b226f5d4bb69a410"
 
     # Retrieves and returns the source of the NAF calendar page using http get
-    def get_calendar_src
+    def get_calendar_json(url)
       require 'open-uri'
       require 'iconv'
 
-      open( CALENDAR_URL ) do |page|
-        calendarSrc = page.read
-        calendarSrc = Iconv.conv('utf-8', 'iso-8859-1', calendarSrc)
-        calendarSrc.strip
+      open(url) do |page|
+        calendarJson = page.read
       end
     end
 
+    def objects_from_event_api
+      require 'json'
+      objects = []
 
-    def src_to_activities(html_markup)
+      json = get_calendar_json(EVENTS_JSON_URL)
+      page_graph = JSON.parse(json)
+      objects.concat(page_graph['objects'])
+      while !page_graph['meta']['next'].nil? do
+        next_page_url = "http://aikido.no/"+page_graph['meta']['next']
+        json = get_calendar_json(next_page_url)
+        page_graph = JSON.parse(json)
+        objects.concat(page_graph['objects'])
+      end
+
+      return objects
+    end
+
+    def objects_to_activities(objects)
       activities = []
-      require 'nokogiri'
-
-
-      doc = Nokogiri::HTML(html_markup)
-      cal_table = doc.css("#calendar")
-      puts cal_table.css("th").count
-
-
+      objects.sort_by! {|o| o['start']}
+      objects.each do |object|
         activities << {
-          :time => "12.januar",
-          :place => "Oslo",
-          :activity => "Leir med Hodor",
-          :contact => "Mr T",
-          :moreinfo => "call us"}
-
+          :time => object['start'],
+          :place => object['arranger']['name'],
+          :activity => object['title'],
+          :contact => object['arranger']['email'],
+          :moreinfo => "http://aikido.no/kalender/"}
+      end
       return activities
     end
 
@@ -42,7 +50,7 @@ module SentrumAikido
     def process_calendar(all_activities)
       result = <<PAGESRC
   <p>
-  <em>Dette er et automatisk uttrekk fra NAF-kalenderen, se <a href=\"#{CALENDAR_URL}\">aikido.no</a> for mer info</em>
+  <em>Dette er et automatisk uttrekk fra NAF-kalenderen, se <a href=\"http://aikido.no/kalender\">aikido.no</a> for mer utfyllende informasjon.</em>
   </p>
 
   <table border="0" id="scraped-calendar">
@@ -63,7 +71,7 @@ PAGESRC
         contact_field = shorten_mail_adr(a[:contact])
 
         tableClass = cycle('list-line-odd', 'list-line-even')
-        rows += "<tr class=\"#{tableClass}\"><td>#{a[:time]}</td><td>#{a[:place]}</td><td>#{a[:activity].slice(0,50)}... #{moreinfo_field}</td><td>#{contact_field}</td></tr>\n"
+        rows += "<tr class=\"#{tableClass}\"><td>#{a[:time]}</td><td>#{a[:place]}</td><td>#{a[:activity].slice(0,100)}... #{moreinfo_field}</td><td>#{contact_field}</td></tr>\n"
       end
 
       return rows
@@ -122,15 +130,9 @@ END_OF_MESSAGE
     # If any exceptions are raised during execution a human readable error message is returned instead.
     def scrape_calendar
       begin
-
-        src = get_calendar_src
-
-        # TODO use unit tested transformation
-
-
-        activities = [{:time => "12.januar", :place => "Oslo", :activity => "Leir med Hodor",
-        :contact => "Mr T", :moreinfo => "call us"}]
-
+        objects = objects_from_event_api
+        objects.select! {|o| DateTime.strptime(o['start'],'%Y-%m-%d') > DateTime.now }
+        activities = objects_to_activities(objects)
         return process_calendar(activities)
       rescue Exception => e
         return format_error(e)
