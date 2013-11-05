@@ -2,30 +2,55 @@
 module SentrumAikido
   class AikidoNoScraper
 
-    CALENDAR_URL = "http://aikido.no/kalender"
+    EVENTS_JSON_URL = "http://aikido.no/api/v1/event/?username=thomas.kjeldahl.nilsson&api_key=e6416d24107a8fdb010d4d43b226f5d4bb69a410"
 
     # Retrieves and returns the source of the NAF calendar page using http get
-    def get_calendar_src
+    def get_calendar_json(url)
       require 'open-uri'
       require 'iconv'
 
-      open( CALENDAR_URL ) do |page|
-        calendarSrc = page.read
-        calendarSrc = Iconv.conv('utf-8', 'iso-8859-1', calendarSrc)
-        calendarSrc.strip
+      open(url) do |page|
+        calendarJson = page.read
       end
     end
 
-    HEADER = "<em>Dette er et automatisk uttrekk fra NAF-kalenderen, se <a href=\"#{CALENDAR_URL}\">aikido.no</a> for mer info</em>"
+    def objects_from_event_api
+      require 'json'
+      objects = []
+
+      json = get_calendar_json(EVENTS_JSON_URL)
+      page_graph = JSON.parse(json)
+      objects.concat(page_graph['objects'])
+      while !page_graph['meta']['next'].nil? do
+        next_page_url = "http://aikido.no/"+page_graph['meta']['next']
+        json = get_calendar_json(next_page_url)
+        page_graph = JSON.parse(json)
+        objects.concat(page_graph['objects'])
+      end
+
+      return objects
+    end
+
+    def objects_to_activities(objects)
+      activities = []
+      objects.sort_by! {|o| o['start']}
+      objects.each do |object|
+        activities << {
+          :time => object['start'],
+          :place => object['arranger']['name'],
+          :activity => object['title'],
+          :contact => object['arranger']['email'],
+          :moreinfo => "http://aikido.no/kalender/"}
+      end
+      return activities
+    end
+
 
     # Transform given raw NAF calendar html source into simplified html table we can embed on our site
-    def process_calendar(calendar_src)
-      month_chunks = get_month_chunks(calendar_src)
-      all_activities = []
-      month_chunks.each { |chunk| all_activities += process_month(chunk) }
+    def process_calendar(all_activities)
       result = <<PAGESRC
   <p>
-  #{HEADER}
+  <em>Dette er et automatisk uttrekk fra NAF-kalenderen, se <a href=\"http://aikido.no/kalender\">aikido.no</a> for mer utfyllende informasjon.</em>
   </p>
 
   <table border="0" id="scraped-calendar">
@@ -35,22 +60,6 @@ module SentrumAikido
 PAGESRC
     end
 
-    # Takes full html src of the calendar.
-    # Extract each month from calendar src, returns array of strings each of which is a month "chunk" of markup
-    def get_month_chunks(calendar_src)
-      months = []
-      pattern = /<td class="month">(.*?)(?=<td class="month">)/m
-      calendar_src =~ pattern
-
-      while($1 != nil) do
-        month = $1
-        # Put month td elements back, they are consumed by pattern match otherwise
-        months.push("<td class=\"month\">"+month+"<td class=\"month\">")
-        $' =~ pattern
-      end
-
-      return months
-    end
 
     # Takes array of activity hashmaps
     # Returns one html table row per activity, one column per key-value pair of activity (when, where, etc)
@@ -62,7 +71,7 @@ PAGESRC
         contact_field = shorten_mail_adr(a[:contact])
 
         tableClass = cycle('list-line-odd', 'list-line-even')
-        rows += "<tr class=\"#{tableClass}\"><td>#{a[:time]}</td><td>#{a[:place]}</td><td>#{a[:activity].slice(0,50)}... #{moreinfo_field}</td><td>#{contact_field}</td></tr>\n"
+        rows += "<tr class=\"#{tableClass}\"><td>#{a[:time]}</td><td>#{a[:place]}</td><td>#{a[:activity].slice(0,100)}... #{moreinfo_field}</td><td>#{contact_field}</td></tr>\n"
       end
 
       return rows
@@ -106,56 +115,6 @@ PAGESRC
       return adr
     end
 
-    # Takes month string description and an activity chunk of markup,
-    # Each activity element (when, where, who etc) is a table row in this format:
-    #   <tr><td class="activitylegend">Hva:</td><td class="activity"><b>Seminar med Birger Sørensen 5.dan</b></td></tr>
-    # Extract each of its rows from markup chunk and store in hash keys: [what, when, place, contact, moreinfo]
-    # Order of activity fields is significant, we rely on them being consistently ordered in the NAF calendar
-    # Returns hashmap of the activites elements
-    def process_activity(activity_chunk, month)
-      fields = []
-
-      pattern = /<tr><td class="activitylegend">.*?<\/td><td class="activity">(.*?)<\/td><\/tr>/m
-      activity_chunk =~ pattern
-
-      while($1 != nil) do
-        field = $1.strip
-        fields.push(field)
-        $' =~ pattern
-      end
-
-      activity = {:time => (fields[1]+" "+month.downcase()), :place => fields[2], :activity => fields[0],
-        :contact => fields[4], :moreinfo => fields[5]}
-
-      return activity
-    end
-
-    # Takes a chunk of markup starting with <td class="month"> element, extracts month name and cuts it up into activity chunks.
-    # Each activity "chunk"  starts and ends with markup: "<tr><td class="activity">"
-    # returns array of activity hashmaps
-    def process_month(month_chunk)
-      pattern =  /<td class="month"><b>(.*?)<\/b><\/td>/
-      month_chunk =~ pattern
-      month = $1.downcase
-      month = month.gsub(/<b>/, "")
-      month = month.gsub(/<\/b>/, "")
-
-      activityChunks = []
-
-      pattern =  /<tr><td class="activity">(.*?)<tr><td class="activity">/m
-      month_chunk =~ pattern
-      while($1 != nil) do
-        activity = $1
-        activityChunks.push(activity)
-        $' =~ pattern
-      end
-
-      collected = []
-      counter = 0
-      activityChunks.each { |chunk| collected.push(process_activity(chunk, month))}
-
-      return collected
-    end
 
     ERRORPREFIX = "<em>Det oppstod en uventet feil under uttrekk av NAF-kalender. Si gjerne ifra til Thomas! :)!</em>"
 
@@ -171,7 +130,10 @@ END_OF_MESSAGE
     # If any exceptions are raised during execution a human readable error message is returned instead.
     def scrape_calendar
       begin
-        return process_calendar(get_calendar_src)
+        objects = objects_from_event_api
+        objects.select! {|o| DateTime.strptime(o['start'],'%Y-%m-%d') > DateTime.now }
+        activities = objects_to_activities(objects)
+        return process_calendar(activities)
       rescue Exception => e
         return format_error(e)
       end
