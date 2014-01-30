@@ -27,10 +27,15 @@ Run all the unit/integration tests like so:
 
 	bundle exec rake test
 
-
-# Deploying to Heroku
+# Deploying to Heroku production
 
 	bundle exec rake deploy
+
+# Deploying to Heroku staging
+
+	git push git@heroku.com:sentrumaikido-staging.git master
+
+Browse to staging URL: http://sentrumaikido-staging.herokuapp.com/
 
 
 
