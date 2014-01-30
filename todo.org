@@ -1,6 +1,6 @@
 * sentrumaikido responsive redesign
 ** DONE Install web dev toolkit extension, turn on "show width/height"
-** TODO Define menu items in code, rewrite menu rendering
+** DONE Define menu items in code, rewrite menu rendering
 ** TODO Setup breakpoints: desktop, mobile. Test in iOS and Android
 ** TODO In mobile style, implement rough version of my design
 ** TODO img, object {max-width: 100%;}

@@ -1,5 +1,33 @@
 
-/* 
+/* Default: hide the mobile-adjusted content*/
+#mobile_content{
+    display:none;
+}
+
+
+
+/*
+  Mobile version
+*/
+
+@media only screen and (max-width: 960px){
+    #mobile_content{
+	display:inline;
+    }
+
+    #desktop_content{
+	display:none;
+    }
+}
+
+
+
+
+/*
+  Default/Desktop version
+*/
+
+/*
    Based on 456 Berea Street example
      http://www.456bereastreet.com/lab/developing_with_web_standards/csslayout/2-col/
 */
@@ -128,14 +156,14 @@ a {
 	color: red;
 	font-weight: bold;
 }
- 
-#nav a:link, #nav a:visited, 
+
+#nav a:link, #nav a:visited,
 #footer a:link, #footer a:visited {
 	color: white;
 	text-decoration: none;
 	font-weight: bold;
 }
- 
+
 #footer a:link, #footer a:visited {
 	color: gray;
 	text-decoration: none;
@@ -155,20 +183,20 @@ a {
 	margin: 0 10px;
 }
 
-.roundtop { 
-	background: url(../images/webGrafikk/corners/tr.gif) no-repeat top right; 
+.roundtop {
+	background: url(../images/webGrafikk/corners/tr.gif) no-repeat top right;
 }
 
 .roundbottom {
-	background: url(../images/webGrafikk/corners/br.gif) no-repeat top right; 
+	background: url(../images/webGrafikk/corners/br.gif) no-repeat top right;
 }
 
-.roundtopInverted { 
-	background: url(../images/webGrafikk/cornersInverted/tr.gif) no-repeat top right; 
+.roundtopInverted {
+	background: url(../images/webGrafikk/cornersInverted/tr.gif) no-repeat top right;
 }
 
 .roundbottomInverted {
-	background: url(../images/webGrafikk/cornersInverted/br.gif) no-repeat top right; 
+	background: url(../images/webGrafikk/cornersInverted/br.gif) no-repeat top right;
 }
 
 
@@ -245,7 +273,7 @@ a:hover {
 .menyheader {
 	margin-bottom: 0px;
 	font-size: 150%;
-	
+
 }
 
 .menypunkter {
