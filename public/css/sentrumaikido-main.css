@@ -328,10 +328,14 @@ a:hover {
 	background: black;
     }
 
-    p, h1, h2, h3, img {
+    p, h1, h2, h3 {
 	max-width: 100%;
 	margin-left: 10px;
 	margin-right: 10px;
+    }
+
+    img {
+	width: 100%;
     }
 
     table{
@@ -349,6 +353,12 @@ a:hover {
     #mobile_nav a {
 	color: white;
 	text-decoration: none;
+    }
+
+    a.button{
+	display:block;
+	max-width: 100%;
+	text-align:center;
     }
 
 
