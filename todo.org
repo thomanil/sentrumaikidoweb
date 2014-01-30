@@ -1,0 +1,12 @@
+* sentrumaikido responsive redesign
+** TODO Desktop: cut the round corners plz
+** TODO Define menu items in code, rewrite menu rendering
+** TODO Setup breakpoints: desktop, mobile. Test in iOS and Android
+** TODO In mobile style, implement rough version of my design
+** TODO img, object {max-width: 100%;}
+** TODO body, header, main {max-width: 100%;}
+** TODO body {font: 100% FONTTYUPES;}
+** TODO Test desktop site in IE7-8
+** TODO Install web dev toolkit extension, turn on "show width/height"
+** TODO Further adjust breakpoints to match the content
+** TODO At some point along the way, setup Projectile for this project
