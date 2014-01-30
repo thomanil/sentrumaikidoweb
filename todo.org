@@ -2,8 +2,8 @@
 ** DONE Install web dev toolkit extension, turn on "show width/height"
 ** DONE Define menu items in code, rewrite menu rendering
 ** DONE Setup breakpoints: desktop, mobile.
-** TODO In mobile style, implement rough version of my design
 ** TODO Test mobile version in iOS and Android, incl. tablet
+** TODO In mobile style, implement rough version of my design
+** TODO Chunk up the overlong paragraphs into shorter ones, look too massive on small screens
+** TODO make classes page work better: either restyle the table, or avoid zoom issue
 ** TODO Test desktop site in IE7-8
-** TODO Further adjust breakpoints to match the content
-** TODO At some point along the way, setup Projectile for this project
