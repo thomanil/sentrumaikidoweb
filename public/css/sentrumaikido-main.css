@@ -318,21 +318,38 @@ a:hover {
     }
 
 
+    html {
+	background: black;
+    }
+
     body {
 	min-width: 100%;
+	font: 100% sans-serif;
+	background: black;
     }
 
-    body {
-	font: 100% sans-serif;}
-
-    p {
-	font-size: 100%;
-    }
-
-    p, h1, h2, h3 {
+    p, h1, h2, h3, img {
 	max-width: 100%;
 	margin-left: 10px;
 	margin-right: 10px;
     }
+
+    table{
+	width:100%;
+	resize:both;
+	overflow:auto;
+    }
+
+    #mobile_content {
+	background: white;
+	padding-top: 10px;
+	padding-bottom: 10px;
+    }
+
+    #mobile_nav a {
+	color: white;
+	text-decoration: none;
+    }
+
 
 }
