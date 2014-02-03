@@ -313,6 +313,14 @@ a:hover {
     }
 
 
+    .dojo-title {
+	color: white;
+	float: right;
+	margin-top: 15px;
+	margin-right: 15px;
+	font-size: 2.5em;
+    }
+
     #mobile_nav_unclicked {
 	color: black;
 	display:block;
