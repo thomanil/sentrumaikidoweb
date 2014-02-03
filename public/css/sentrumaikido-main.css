@@ -327,14 +327,13 @@ a:hover {
     }
 
 
-
-
     #mobile_nav_clicked .menypunkter {
 	margin: 0px;
+	margin-left: 0px;
     }
 
     #mobile_nav_clicked ul {
-	background-color: red;
+	background-color: white;
 	list-style: none;
     }
 
@@ -348,7 +347,12 @@ a:hover {
 	text-decoration: none;
     }
 
+    #mobile_nav_clicked #nav-dark {
+	display: inline;
+    }
+
     #mobile_nav_clicked #nav-light {
+	display: inline;
     }
 
 
