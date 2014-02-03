@@ -308,7 +308,7 @@ a:hover {
   Mobile version
 */
 
-@media only screen and (max-width: 960px){
+@media only screen and (max-width: 759px){
     #mobile_section{
 	display:inline;
     }
