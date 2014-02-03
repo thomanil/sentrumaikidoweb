@@ -308,16 +308,24 @@ a:hover {
 
 @media only screen and (max-width: 759px){
     #mobile_section{
-	display:inline;
+	display:block;
+	width: 100%;
     }
 
 
+    #mobile_nav_unclicked {
+	color: black;
+	display:block;
+	width: 100%;
+    }
 
     #mobile_nav_clicked {
 	background-color: white;
 	color: black;
-	display:block;
+	display:none;
+	width: 100%;
     }
+
 
 
 
@@ -326,7 +334,14 @@ a:hover {
     }
 
     #mobile_nav_clicked ul {
+	background-color: red;
+	list-style: none;
     }
+
+     #mobile_nav_clicked li {
+	 font-size: 2em;
+	 padding: 10px;
+     }
 
     #mobile_nav_clicked a {
 	color: black;
