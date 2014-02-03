@@ -302,6 +302,12 @@ a:hover {
 
 
 
+/* For the scraped calendars */
+td {
+   border: 1px solid;
+   padding: 5px 10px 5px 10px;
+}
+
 
 
 /*
@@ -338,11 +344,18 @@ a:hover {
 	width: 100%;
     }
 
-    table{
+    table {
 	width:100%;
+	max-width:100%;
 	resize:both;
 	overflow:auto;
     }
+
+    td, td > p{
+	padding: 1px 1px 1px 1px;
+	margin: 1px;
+    }
+
 
     #mobile_content {
 	background: white;
