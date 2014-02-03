@@ -320,8 +320,8 @@ a:hover {
     }
 
     #mobile_nav_clicked {
-	background-color: white;
-	color: black;
+	background-color: bøacl;
+	color: white;
 	display:none;
 	width: 100%;
     }
@@ -330,10 +330,11 @@ a:hover {
     #mobile_nav_clicked .menypunkter {
 	margin: 0px;
 	margin-left: 0px;
+	margin-bottom: 7px;
     }
 
     #mobile_nav_clicked ul {
-	background-color: white;
+	background-color: black;
 	list-style: none;
     }
 
@@ -343,8 +344,9 @@ a:hover {
 
     #mobile_nav_clicked a {
 	font-size: 1.5em;
-	color: black;
+	color: white;
 	text-decoration: none;
+
     }
 
     #mobile_nav_clicked #nav-dark {
