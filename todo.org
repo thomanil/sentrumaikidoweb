@@ -5,9 +5,10 @@
 ** DONE Make treningstider page work better: either restyle the table, or avoid zoom issue. Maybe just tighten the cells?
 ** DONE Adjust breakpoint down to match largest current smartphones
 ** DONE Only do 100% width on specific marked images like map, not instructor images etc
-** TODO Prettier, color-inverted dropdown navigation
+** TODO Trial page: clearer call to action: Make email and phone links bigger, turn into ("ring / send mail") buttons, auto-email/call on mobile
 ** TODO Better typography/contrast on Sentrum Aikido dojo title in header
-** TODO Chunk up the overlong paragraphs into shorter ones, or create separate mobile pages
+** TODO Too heavy content on mobile. Chunk up the overlong paragraphs into shorter ones, or create separate mobile pages
+** TODO Add google maps link/integration
+** TODO Prettier, color-inverted dropdown navigation
 ** TODO Test mobile version in iOS and Android, incl. tablet
 ** TODO Test desktop site in IE7-8
-** TODO Add google maps link/integration
