@@ -311,6 +311,34 @@ a:hover {
 	display:inline;
     }
 
+
+
+    #mobile_nav {
+	background-color: black;
+    }
+
+
+
+    #mobile_nav .menypunkter {
+	margin: 0px;
+    }
+
+    #mobile_nav ul {
+	display:none;
+    }
+
+    #mobile_nav a {
+	color: white;
+	text-decoration: none;
+    }
+
+    #mobile_nav #nav-light {
+	display:none;
+    }
+
+
+
+
     #desktop_section{
 	display:none;
     }
@@ -354,10 +382,6 @@ a:hover {
 	padding-bottom: 10px;
     }
 
-    #mobile_nav a {
-	color: white;
-	text-decoration: none;
-    }
 
     a.button{
 	display:block;
