@@ -339,11 +339,11 @@ a:hover {
     }
 
      #mobile_nav_clicked li {
-	 font-size: 1.5em;
-	 padding: 5px;
+	 padding: 7px;
      }
 
     #mobile_nav_clicked a {
+	font-size: 1.5em;
 	color: black;
 	text-decoration: none;
     }
