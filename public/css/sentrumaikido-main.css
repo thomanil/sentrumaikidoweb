@@ -302,14 +302,6 @@ a:hover {
 
 
 
-/* For the scraped calendars */
-td {
-   border: 1px solid;
-   padding: 5px 10px 5px 10px;
-}
-
-
-
 /*
   Mobile version
 */
@@ -340,7 +332,7 @@ td {
 	margin-right: 10px;
     }
 
-    img {
+    #map {
 	width: 100%;
     }
 
@@ -355,7 +347,6 @@ td {
 	padding: 1px 1px 1px 1px;
 	margin: 1px;
     }
-
 
     #mobile_content {
 	background: white;

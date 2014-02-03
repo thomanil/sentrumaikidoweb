@@ -2,13 +2,13 @@
 ** DONE Install web dev toolkit extension, turn on "show width/height"
 ** DONE Define menu items in code, rewrite menu rendering
 ** DONE Setup breakpoints: desktop, mobile.
-** TODO Adjust breakpoint down to match largest current smartphones
+** DONE Make treningstider page work better: either restyle the table, or avoid zoom issue. Maybe just tighten the cells?
+** DONE Adjust breakpoint down to match largest current smartphones
 ** TODO Clickable, semi-transparent dropdown menu
    Bonus: can show more/inverted version of logo when nav clicked
    Fixed nav/header, scrollable content
    Create black/white and inverted menu png
 ** TODO Chunk up the overlong paragraphs into shorter ones, look too massive on small screens
-** TODO Make treningstider page work better: either restyle the table, or avoid zoom issue. Maybe just tighten the cells?
 ** TODO Only do 100% width on specific marked images like map, not instructor images etc
 ** TODO Test mobile version in iOS and Android, incl. tablet
 ** TODO Test desktop site in IE7-8
