@@ -313,27 +313,27 @@ a:hover {
 
 
 
-    #mobile_nav {
-	background-color: black;
+    #mobile_nav_clicked {
+	background-color: white;
+	color: black;
+	display:block;
     }
 
 
 
-    #mobile_nav .menypunkter {
+    #mobile_nav_clicked .menypunkter {
 	margin: 0px;
     }
 
-    #mobile_nav ul {
-	display:none;
+    #mobile_nav_clicked ul {
     }
 
-    #mobile_nav a {
-	color: white;
+    #mobile_nav_clicked a {
+	color: black;
 	text-decoration: none;
     }
 
-    #mobile_nav #nav-light {
-	display:none;
+    #mobile_nav_clicked #nav-light {
     }
 
 
