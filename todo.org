@@ -7,6 +7,7 @@
 ** DONE Only do 100% width on specific marked images like map, not instructor images etc
 ** DONE play with logo/header: split dojo name, add dojo mark in front, scale down nav square
 ** TODO Add google maps link/integration
+        Should be able to click to take you to google maps location for dojo adress
 ** TODO Change Kamillas sentence in pris-page
 ** TODO Trial page: clearer call to action: Make email and phone links bigger, turn into ("ring / send mail") buttons, auto-email/call on mobile
 ** TODO regenerate the "Gratis prøvetime!" button styling, check that it works in IE
