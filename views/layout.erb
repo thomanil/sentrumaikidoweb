@@ -21,17 +21,18 @@
 
 
     <div id="mobile_section">
-      <div id="mobile_nav_unclicked">
-        <img id="nav-dark" src="/images/sentrum-nav-button-dark.png" onclick="$('#mobile_nav_clicked').css('display', 'block'); $('#mobile_nav_unclicked').hide();"/>
-        <img id="logo-mark" src="/images/logoMark.png"/>
-        <span class="dojo-title">Sentrum Aikido</span>
+      <div id="new-header">
+        <table>
+          <tr>
+            <td><img id="navSquare" src="/images/sentrum-nav-button-dark.png"
+                     onclick="$('#mobile-menu').toggle();"/></td>
+            <td><div id="dojoTitle">Sentrum Aikido</div></td>
+            <td><img id="mark" src="/images/logoMark.png"/></td>
+          </tr>
+        </table>
       </div>
-
-      <div id="mobile_nav_clicked">
-        <img id="nav-light" src="/images/sentrum-nav-button-dark.png" onclick="$('#mobile_nav_clicked').css('display', 'none'); $('#mobile_nav_unclicked').show();"/>
-        <img id="logo-mark" src="/images/logoMark.png"/>
-        <span class="dojo-title">Sentrum Aikido</span>
-        <%= nav_mobile_content %>
+      <div id="mobile-menu">
+      <%= nav_mobile_content %>
       </div>
 
       <div id="mobile_content">

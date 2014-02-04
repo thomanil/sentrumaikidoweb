@@ -339,22 +339,23 @@ a:hover {
     }
 
 
-    #mobile_nav_clicked .menypunkter {
+    #mobile_section .menypunkter {
 	margin: 0px;
 	margin-left: 0px;
 	margin-bottom: 7px;
+	color: white;
     }
 
-    #mobile_nav_clicked ul {
+    #mobile-menu ul {
 	background-color: black;
 	list-style: none;
     }
 
-     #mobile_nav_clicked li {
+     #mobile-menu li {
 	 padding: 7px;
      }
 
-    #mobile_nav_clicked a {
+    #mobile-menu a {
 	font-size: 1.5em;
 	color: white;
 	text-decoration: none;
@@ -373,6 +374,24 @@ a:hover {
 
 
 
+    #new-header {
+	height: 3em;
+	color:white;
+	text-align: center;
+	font-size: 1.5em;
+    }
+
+    #dojoTitle {
+	width: auto;
+    }
+
+    #mark {
+	width: 2.7em;
+    }
+
+    #navSquare {
+	width: 2.7em;
+    }
 
     #desktop_section{
 	display:none;
@@ -423,6 +442,8 @@ a:hover {
 	max-width: 100%;
 	text-align:center;
     }
+
+
 
 
 }
