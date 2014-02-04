@@ -5,9 +5,9 @@
 ** DONE Make treningstider page work better: either restyle the table, or avoid zoom issue. Maybe just tighten the cells?
 ** DONE Adjust breakpoint down to match largest current smartphones
 ** DONE Only do 100% width on specific marked images like map, not instructor images etc
-** TODO play with logo/header: split dojo name, add dojo mark in front, scale down nav square
-** TODO Change Kamillas sentence in pris-page
+** DONE play with logo/header: split dojo name, add dojo mark in front, scale down nav square
 ** TODO Add google maps link/integration
+** TODO Change Kamillas sentence in pris-page
 ** TODO Trial page: clearer call to action: Make email and phone links bigger, turn into ("ring / send mail") buttons, auto-email/call on mobile
 ** TODO regenerate the "Gratis prøvetime!" button styling, check that it works in IE
 ** TODO Better typography/contrast on Sentrum Aikido dojo title in header
