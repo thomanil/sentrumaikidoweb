@@ -315,10 +315,14 @@ a:hover {
 
     .dojo-title {
 	color: white;
-	float: right;
-	margin-top: 15px;
-	margin-right: 15px;
+	margin-top: 4px;
+	margin-right: 4px;
 	font-size: 2em;
+    }
+
+    #logo-mark {
+	width: 3em;
+	float: right;
     }
 
     #mobile_nav_unclicked {
@@ -357,12 +361,14 @@ a:hover {
 
     }
 
-    #mobile_nav_clicked #nav-dark {
+    #nav-dark {
 	display: inline;
+	width: 3em;
     }
 
-    #mobile_nav_clicked #nav-light {
+    #nav-light {
 	display: inline;
+	width: 3em;
     }
 
 
