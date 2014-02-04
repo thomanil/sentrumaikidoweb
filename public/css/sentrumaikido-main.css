@@ -344,6 +344,7 @@ a:hover {
 	margin-left: 0px;
 	margin-bottom: 7px;
 	color: white;
+	display: none;
     }
 
     #mobile-menu ul {
