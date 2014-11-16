@@ -106,7 +106,7 @@ get '/show_calendar/index' do
 end
 
 get '/julebord' do
-  redirect "https://docs.google.com/spreadsheet/viewform?formkey=dGVtdGZWUGkweFdUSHA4eHZQbmlKRVE6MA"
+  redirect "http://goo.gl/forms/2NG0LPakRI"
 end
 
 get '/beginners' do
