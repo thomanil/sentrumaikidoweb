@@ -11,7 +11,6 @@ install bundler". Then from the project root, run:
 
 This should install all dependencies.
 
-
 # Running the server process locally
 
 Run the Sinatra process by running:
