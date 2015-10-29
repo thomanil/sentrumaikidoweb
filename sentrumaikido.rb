@@ -106,7 +106,7 @@ get '/show_calendar/index' do
 end
 
 get '/julebord' do
-  redirect "http://goo.gl/forms/2NG0LPakRI"
+  redirect "https://goo.gl/1vRcu8"
 end
 
 get '/beginners' do
